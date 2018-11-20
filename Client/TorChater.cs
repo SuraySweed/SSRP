@@ -48,9 +48,16 @@ namespace TorChatClient
         private void sendButton_Click(object sender, EventArgs e)
         {
             if (MessangerBox.Text == null || MessangerBox.Text == "")
-                ServerConnection.SendToServer(MessangerBox.Text);
-            else
+            {
                 MessageBox.Show("NO MESSAGE WRITTEN!!!");
+            }
+            else
+            {
+                ServerConnection.SendToServer(MessangerBox.Text);
+
+                string messageFromServer = ServerConnection.ReceiveFromServer();
+            }
+
         }
     }
 

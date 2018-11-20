@@ -32,6 +32,8 @@
             this.typeCommand = new System.Windows.Forms.Label();
             this.MessangerBox = new System.Windows.Forms.TextBox();
             this.sendButton = new System.Windows.Forms.Button();
+            this.recievedMessages = new System.Windows.Forms.RichTextBox();
+            this.serverResponse = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // exitButton
@@ -71,11 +73,31 @@
             this.sendButton.UseVisualStyleBackColor = true;
             this.sendButton.Click += new System.EventHandler(this.sendButton_Click);
             // 
+            // recievedMessages
+            // 
+            this.recievedMessages.Location = new System.Drawing.Point(64, 146);
+            this.recievedMessages.Name = "recievedMessages";
+            this.recievedMessages.Size = new System.Drawing.Size(307, 96);
+            this.recievedMessages.TabIndex = 4;
+            this.recievedMessages.Text = "";
+            // 
+            // serverResponse
+            // 
+            this.serverResponse.AutoSize = true;
+            this.serverResponse.Font = new System.Drawing.Font("Miriam Fixed", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.serverResponse.Location = new System.Drawing.Point(63, 124);
+            this.serverResponse.Name = "serverResponse";
+            this.serverResponse.Size = new System.Drawing.Size(207, 19);
+            this.serverResponse.TabIndex = 5;
+            this.serverResponse.Text = "Server\'s Response:";
+            // 
             // TorChater
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(496, 359);
+            this.Controls.Add(this.serverResponse);
+            this.Controls.Add(this.recievedMessages);
             this.Controls.Add(this.sendButton);
             this.Controls.Add(this.MessangerBox);
             this.Controls.Add(this.typeCommand);
@@ -94,6 +116,8 @@
         private System.Windows.Forms.Label typeCommand;
         private System.Windows.Forms.TextBox MessangerBox;
         private System.Windows.Forms.Button sendButton;
+        private System.Windows.Forms.RichTextBox recievedMessages;
+        private System.Windows.Forms.Label serverResponse;
     }
 }
 
