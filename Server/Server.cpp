@@ -83,12 +83,13 @@ void Server::clientHandler(SOCKET clientSocket)
 	char recvMsg[100];
 	try
 	{
+		_Hepler.sendData(clientSocket, msg);
 		send(clientSocket, msg.c_str(), msg.size(), 0);
 		while (TRUE)
 		{
 			recv(clientSocket, recvMsg, 4, 0);
 			cout << "the msg from the client is: " << recvMsg << endl;
-			send(clientSocket, msg.c_str(), msg.size(), 0);
+			_Hepler.sendData(clientSocket, msg);
 		}
 
 
