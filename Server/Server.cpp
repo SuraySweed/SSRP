@@ -80,16 +80,16 @@ void Server::accept()
 void Server::clientHandler(SOCKET clientSocket)
 {
 	string msg = "ok, good";
-	char recvMsg[100];
+	string recvMsg;
 	try
 	{
-		_Hepler.sendData(clientSocket, msg);
-		send(clientSocket, msg.c_str(), msg.size(), 0);
+		//_Helper.sendData(clientSocket, msg);
+		//send(clientSocket, msg.c_str(), msg.size(), 0);
 		while (TRUE)
 		{
-			recv(clientSocket, recvMsg, 4, 0);
+			recvMsg = _Helper.getStringPartFromSocket(clientSocket, 4);
 			cout << "the msg from the client is: " << recvMsg << endl;
-			_Hepler.sendData(clientSocket, msg);
+			_Helper.sendData(clientSocket, msg);
 		}
 
 

@@ -56,6 +56,7 @@ namespace TorChatClient
                 ServerConnection.SendToServer(MessangerBox.Text);
 
                 string messageFromServer = ServerConnection.ReceiveFromServer();
+                recievedMessages.Text = messageFromServer;
             }
 
         }

@@ -2,6 +2,7 @@
 
 #include <WinSock2.h>
 #include <Windows.h>
+#include "Helper.h"
 
 
 class Server
@@ -17,5 +18,6 @@ private:
 	void clientHandler(SOCKET clientSocket);
 
 	SOCKET _serverSocket;
+	Helper _Helper;
 };
 
