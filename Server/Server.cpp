@@ -79,22 +79,23 @@ void Server::accept()
 
 void Server::clientHandler(SOCKET clientSocket)
 {
+	string msg = "ok, good";
+	char recvMsg[100];
 	try
 	{
-		string s = "Welcome! What is your name (4 bytes)? ";
-		send(clientSocket, s.c_str(), s.size(), 0);  // last parameter: flag. for us will be 0.
+		send(clientSocket, msg.c_str(), msg.size(), 0);
+		while (TRUE)
+		{
+			recv(clientSocket, recvMsg, 4, 0);
+			cout << "the msg from the client is: " << recvMsg << endl;
+			send(clientSocket, msg.c_str(), msg.size(), 0);
+		}
 
-		char m[5];
-		recv(clientSocket, m, 4, 0);
-		m[4] = 0;
-		cout << "Client name is: " << m << endl;
 
-		s = "Bye";
-		send(clientSocket, s.c_str(), s.size(), 0);
-		
 		// Closing the socket (in the level of the TCP protocol)
 		closesocket(clientSocket); 
 	}
+
 	catch (const std::exception& e)
 	{
 		closesocket(clientSocket);
