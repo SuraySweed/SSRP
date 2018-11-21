@@ -53,12 +53,19 @@ namespace TorChatClient
             }
             else
             {
-                ServerConnection.SendToServer(MessangerBox.Text);
+                string lengthOfMsg = getPaddedNumber(MessangerBox.Text.Length, 4);
+                string msgToServer = lengthOfMsg + MessangerBox.Text;
+                ServerConnection.SendToServer(msgToServer);
 
                 string messageFromServer = ServerConnection.ReceiveFromServer();
                 recievedMessages.Text = messageFromServer;
             }
-
+        }
+        public string getPaddedNumber(int number, int numberOfDigits)
+        {
+            string toReturn = number.ToString();
+            toReturn = toReturn.PadLeft(numberOfDigits, '0');
+            return toReturn;
         }
     }
 

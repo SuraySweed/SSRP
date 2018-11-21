@@ -70,7 +70,7 @@ void Server::accept()
 	if (client_socket == INVALID_SOCKET)
 		throw std::exception(__FUNCTION__);
 
-	cout << "Client accepted. Server and client can speak" << endl;
+	cout << "Client accepted !.  SOCKET = " << client_socket << endl;
 
 	// the function that handle the conversation with the client
 	clientHandler(client_socket);
@@ -81,13 +81,15 @@ void Server::clientHandler(SOCKET clientSocket)
 {
 	string msg = "ok, good";
 	string recvMsg;
+	int byte = 0;
 	try
 	{
 		//_Helper.sendData(clientSocket, msg);
 		//send(clientSocket, msg.c_str(), msg.size(), 0);
 		while (TRUE)
 		{
-			recvMsg = _Helper.getStringPartFromSocket(clientSocket, 4);
+			byte = Helper::getIntPartFromSocket(clientSocket, 4);
+			recvMsg = _Helper.getStringPartFromSocket(clientSocket, byte);
 			cout << "the msg from the client is: " << recvMsg << endl;
 			_Helper.sendData(clientSocket, msg);
 		}
