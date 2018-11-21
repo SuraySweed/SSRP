@@ -34,6 +34,8 @@
             this.sendButton = new System.Windows.Forms.Button();
             this.recievedMessages = new System.Windows.Forms.RichTextBox();
             this.serverResponse = new System.Windows.Forms.Label();
+            this.nameBox = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // exitButton
@@ -58,9 +60,9 @@
             // 
             // MessangerBox
             // 
-            this.MessangerBox.Location = new System.Drawing.Point(67, 81);
+            this.MessangerBox.Location = new System.Drawing.Point(263, 41);
             this.MessangerBox.Name = "MessangerBox";
-            this.MessangerBox.Size = new System.Drawing.Size(361, 20);
+            this.MessangerBox.Size = new System.Drawing.Size(203, 20);
             this.MessangerBox.TabIndex = 2;
             // 
             // sendButton
@@ -77,7 +79,7 @@
             // 
             this.recievedMessages.Location = new System.Drawing.Point(64, 146);
             this.recievedMessages.Name = "recievedMessages";
-            this.recievedMessages.Size = new System.Drawing.Size(307, 96);
+            this.recievedMessages.Size = new System.Drawing.Size(228, 51);
             this.recievedMessages.TabIndex = 4;
             this.recievedMessages.Text = "";
             // 
@@ -91,11 +93,30 @@
             this.serverResponse.TabIndex = 5;
             this.serverResponse.Text = "Server\'s Response:";
             // 
+            // nameBox
+            // 
+            this.nameBox.Location = new System.Drawing.Point(263, 84);
+            this.nameBox.Name = "nameBox";
+            this.nameBox.Size = new System.Drawing.Size(135, 20);
+            this.nameBox.TabIndex = 6;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Miriam Fixed", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(64, 86);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(188, 16);
+            this.label1.TabIndex = 7;
+            this.label1.Text = "Name Of Recipient:";
+            // 
             // TorChater
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(496, 359);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.nameBox);
             this.Controls.Add(this.serverResponse);
             this.Controls.Add(this.recievedMessages);
             this.Controls.Add(this.sendButton);
@@ -118,6 +139,8 @@
         private System.Windows.Forms.Button sendButton;
         private System.Windows.Forms.RichTextBox recievedMessages;
         private System.Windows.Forms.Label serverResponse;
+        private System.Windows.Forms.TextBox nameBox;
+        private System.Windows.Forms.Label label1;
     }
 }
 

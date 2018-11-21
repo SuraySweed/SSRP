@@ -51,10 +51,16 @@ namespace TorChatClient
             {
                 MessageBox.Show("NO MESSAGE WRITTEN!!!");
             }
+            else if(nameBox.Text == null || nameBox.Text == "")
+            {
+                MessageBox.Show("NO DESTINATION!!!");
+            }
             else
             {
                 string lengthOfMsg = getPaddedNumber(MessangerBox.Text.Length, 4);
-                string msgToServer = lengthOfMsg + MessangerBox.Text;
+                string lengthOfDestName = getPaddedNumber(nameBox.Text.Length, 4);
+
+                string msgToServer = lengthOfMsg + MessangerBox.Text + lengthOfDestName + nameBox.Text;
                 ServerConnection.SendToServer(msgToServer);
 
                 string messageFromServer = ServerConnection.ReceiveFromServer();
