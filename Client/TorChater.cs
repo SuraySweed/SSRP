@@ -38,6 +38,8 @@ namespace TorChatClient
                     this.Close();
                 }
             }
+            recievedMessages.Text = ServerConnection.ReceiveFromServer(); // receiving the welcoming message
+
         }
 
         private void exitButton_Click(object sender, EventArgs e)
@@ -57,10 +59,10 @@ namespace TorChatClient
             }
             else
             {
-                string lengthOfMsg = getPaddedNumber(MessangerBox.Text.Length, 4);
-                string lengthOfDestName = getPaddedNumber(nameBox.Text.Length, 4);
+                //string lengthOfMsg = getPaddedNumber(MessangerBox.Text.Length, 4);
+                //string lengthOfDestName = getPaddedNumber(nameBox.Text.Length, 4);
 
-                string msgToServer = lengthOfMsg + MessangerBox.Text + lengthOfDestName + nameBox.Text;
+                string msgToServer = MessangerBox.Text; //string msgToServer = lengthOfMsg + MessangerBox.Text; // + lengthOfDestName + nameBox.Text;
                 ServerConnection.SendToServer(msgToServer);
 
                 string messageFromServer = ServerConnection.ReceiveFromServer();

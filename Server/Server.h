@@ -3,7 +3,9 @@
 #include <WinSock2.h>
 #include <Windows.h>
 #include "Helper.h"
+#include <vector>
 
+using std::vector;
 
 class Server
 {
@@ -14,9 +16,11 @@ public:
 
 private:
 
-	void accept();
+	void acceptt();
 	void clientHandler(SOCKET clientSocket);
+	//void messageHandler(string msg);
 
+	vector<SOCKET> _clients;
 	SOCKET _serverSocket;
 	Helper _Helper;
 };
