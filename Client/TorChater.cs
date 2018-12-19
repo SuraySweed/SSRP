@@ -23,77 +23,13 @@ namespace TorChatClient
 
         private void TorChater_Load(object sender, EventArgs e)
         {
-            bool check = true;
-
-            while (check)
-            {
-                check = ServerConnection.connection();
-                if (check)
-                {
-                    break;
-                }
-                else
-                {
-                    MessageBox.Show("NO CONNECTION!!");
-                    this.Close();
-                }
-            }
-            recievedMessages.Text = ServerConnection.ReceiveFromServer(); // receiving the welcoming message
+           
 
         }
 
         private void exitButton_Click(object sender, EventArgs e)
         {
             this.Close();
-        }
-
-        private void sendButton_Click(object sender, EventArgs e)
-        {
-            if (typeCommand.Text != "Enter Your Name:")
-            {
-                if (MessangerBox.Text == null || MessangerBox.Text == "")
-                {
-                    MessageBox.Show("NO MESSAGE WRITTEN!!!");
-                }
-                else if (nameBox.Text == null || nameBox.Text == "")
-                {
-                    MessageBox.Show("NO DESTINATION!!!");
-                }
-                else
-                {
-                    string msgToServer = MessangerBox.Text;
-                    ServerConnection.SendToServer(msgToServer);
-
-                    string messageFromServer = ServerConnection.ReceiveFromServer();
-                    recievedMessages.Text = messageFromServer;
-                }
-            }
-            else
-            {
-
-                if (MessangerBox.Text == null || MessangerBox.Text == "")
-                {
-                    MessageBox.Show("NO MESSAGE WRITTEN!!!");
-                }
-                else
-                {
-                    string msgToServer = MessangerBox.Text;
-                    nameBox.Text = MessangerBox.Text;
-                    ServerConnection.SendToServer(msgToServer);
-
-                    string messageFromServer = ServerConnection.ReceiveFromServer();
-                    recievedMessages.Text = messageFromServer;
-
-                    recievedMessages.Visible = true;
-                    recievedMessages.Text = "";
-                    nameBox.Visible = true;
-                    nameBox.Text = "";
-                    typeCommand.Text = "Message To Send:";
-                    typeCommand.Visible = true;
-                    label1.Visible = true;
-                    serverResponse.Visible = true;
-                }
-            }
         }
 
         public string getPaddedNumber(int number, int numberOfDigits)
@@ -103,9 +39,80 @@ namespace TorChatClient
             return toReturn;
         }
 
-        private void typeCommand_Click(object sender, EventArgs e)
+        private void label1_Click(object sender, EventArgs e)
         {
+            
+        }
 
+        private void ConnectButton_Click(object sender, EventArgs e)
+        {
+            if(ServerConnection.connection())
+            {
+                if (nameBox.Text != null && nameBox.Text != "")
+                {
+                    ServerConnection.SendToServer("100|" + nameBox.Text);
+
+                    string recvMsg = ServerConnection.ReceiveFromServer();
+                    fstMsg.Hide();
+                    nameBox.Hide();
+                    ConnectButton.Hide();
+                    MessageBox.Show(recvMsg);
+                    SendButton.Show();
+                    scndTxt.Show();
+                    MsgBox.Show();
+                    thrdTxt.Show();
+                    recepientName.Show();
+                }
+                else
+                {
+                    MessageBox.Show("YOU DIDN'T TYPE YOUR NAME!!!");
+                }
+            }
+            else
+            {
+                MessageBox.Show("NO CONNECTION!!!");
+            }
+        }
+
+        private void nameBox_TextChanged(object sender, EventArgs e)
+        {
+            if(nameBox.Text != "")
+            {
+                ConnectButton.Enabled = true;
+            }
+            else
+            {
+                ConnectButton.Enabled = false;
+            }
+        }
+
+        private void SendButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (MsgBox.Text == "")
+                {
+                    notes.Text = "you need to type a message!";
+                }
+                else if (recepientName.Text == "")
+                {
+                    notes.Text = "you need to type the destination!";
+                }
+                else
+                {
+                    // connect to other fellow 
+                    string msgToSend = "102|" + recepientName.Text;
+                    ServerConnection.SendToServer(msgToSend);
+                    // getting his info (address)--> port, ip
+                    string infoOnOtherSide = ServerConnection.ReceiveFromServer();
+                    string[] list = infoOnOtherSide.Split('|');
+
+                }
+            }
+            catch (Exception)
+            {
+
+            }
         }
     }
 
