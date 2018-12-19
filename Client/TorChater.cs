@@ -49,31 +49,63 @@ namespace TorChatClient
 
         private void sendButton_Click(object sender, EventArgs e)
         {
-            if (MessangerBox.Text == null || MessangerBox.Text == "")
+            if (typeCommand.Text != "Enter Your Name:")
             {
-                MessageBox.Show("NO MESSAGE WRITTEN!!!");
-            }
-            else if(nameBox.Text == null || nameBox.Text == "")
-            {
-                MessageBox.Show("NO DESTINATION!!!");
+                if (MessangerBox.Text == null || MessangerBox.Text == "")
+                {
+                    MessageBox.Show("NO MESSAGE WRITTEN!!!");
+                }
+                else if (nameBox.Text == null || nameBox.Text == "")
+                {
+                    MessageBox.Show("NO DESTINATION!!!");
+                }
+                else
+                {
+                    string msgToServer = MessangerBox.Text;
+                    ServerConnection.SendToServer(msgToServer);
+
+                    string messageFromServer = ServerConnection.ReceiveFromServer();
+                    recievedMessages.Text = messageFromServer;
+                }
             }
             else
             {
-                //string lengthOfMsg = getPaddedNumber(MessangerBox.Text.Length, 4);
-                //string lengthOfDestName = getPaddedNumber(nameBox.Text.Length, 4);
 
-                string msgToServer = MessangerBox.Text; //string msgToServer = lengthOfMsg + MessangerBox.Text; // + lengthOfDestName + nameBox.Text;
-                ServerConnection.SendToServer(msgToServer);
+                if (MessangerBox.Text == null || MessangerBox.Text == "")
+                {
+                    MessageBox.Show("NO MESSAGE WRITTEN!!!");
+                }
+                else
+                {
+                    string msgToServer = MessangerBox.Text;
+                    nameBox.Text = MessangerBox.Text;
+                    ServerConnection.SendToServer(msgToServer);
 
-                string messageFromServer = ServerConnection.ReceiveFromServer();
-                recievedMessages.Text = messageFromServer;
+                    string messageFromServer = ServerConnection.ReceiveFromServer();
+                    recievedMessages.Text = messageFromServer;
+
+                    recievedMessages.Visible = true;
+                    recievedMessages.Text = "";
+                    nameBox.Visible = true;
+                    nameBox.Text = "";
+                    typeCommand.Text = "Message To Send:";
+                    typeCommand.Visible = true;
+                    label1.Visible = true;
+                    serverResponse.Visible = true;
+                }
             }
         }
+
         public string getPaddedNumber(int number, int numberOfDigits)
         {
             string toReturn = number.ToString();
             toReturn = toReturn.PadLeft(numberOfDigits, '0');
             return toReturn;
+        }
+
+        private void typeCommand_Click(object sender, EventArgs e)
+        {
+
         }
     }
 

@@ -54,9 +54,10 @@
             this.typeCommand.Font = new System.Drawing.Font("Miriam Fixed", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.typeCommand.Location = new System.Drawing.Point(63, 41);
             this.typeCommand.Name = "typeCommand";
-            this.typeCommand.Size = new System.Drawing.Size(207, 19);
+            this.typeCommand.Size = new System.Drawing.Size(185, 19);
             this.typeCommand.TabIndex = 1;
-            this.typeCommand.Text = "Type Message Here:";
+            this.typeCommand.Text = "Enter Your Name:";
+            this.typeCommand.Click += new System.EventHandler(this.typeCommand_Click);
             // 
             // MessangerBox
             // 
@@ -82,6 +83,7 @@
             this.recievedMessages.Size = new System.Drawing.Size(228, 51);
             this.recievedMessages.TabIndex = 4;
             this.recievedMessages.Text = "";
+            this.recievedMessages.Visible = false;
             // 
             // serverResponse
             // 
@@ -92,6 +94,7 @@
             this.serverResponse.Size = new System.Drawing.Size(207, 19);
             this.serverResponse.TabIndex = 5;
             this.serverResponse.Text = "Server\'s Response:";
+            this.serverResponse.Visible = false;
             // 
             // nameBox
             // 
@@ -99,6 +102,7 @@
             this.nameBox.Name = "nameBox";
             this.nameBox.Size = new System.Drawing.Size(135, 20);
             this.nameBox.TabIndex = 6;
+            this.nameBox.Visible = false;
             // 
             // label1
             // 
@@ -109,6 +113,7 @@
             this.label1.Size = new System.Drawing.Size(188, 16);
             this.label1.TabIndex = 7;
             this.label1.Text = "Name Of Recipient:";
+            this.label1.Visible = false;
             // 
             // TorChater
             // 
