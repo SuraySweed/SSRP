@@ -13,7 +13,7 @@ def main():
 
     # Bind the socket to the port
 	server_address = ('localhost', 8820)
-	print("WELCOME TO THE SSRP SERVER !!\n-----------------------\n")
+	print("\nWELCOME TO THE SSRP SERVER !!\n-----------------------")
 	print ("starting up on port", server_address)
 	listening_socket.bind(server_address)
 
@@ -23,20 +23,28 @@ def main():
 	while True:
 		try:
 			# Wait for a connection
-			print("waiting for a connection\naccepting client...")
+			print("waiting for a connection\naccepting client...\n-----------------------")
 			
 			connection, client_address = listening_socket.accept()
 			print('connection from', client_address)
 
 			msg_from_client = connection.recv(128)
 			print("received: ", msg_from_client.decode('utf-8'))
-			msg_code = get_msg_code(msg_from_client.decode('utf-8'))
+			msg_code = get_msg_code(msg_from_client)
 		
-			if(msg_code == 100):
-				client_name = handle_recevied_name(msg_from_client.decode('utf-8'))	
+			if(msg_code == b'100'):
+				client_name = handle_recevied_name(msg_from_client)	
 			
-			#msg_to_client = "HEY ", client_name, ", WELCOME TO THE SSRP SERVER !!!"
-			connection.sendall(b"WELCOME TO THE SSRP SERVER !!!")
+			msg_to_client = "HEY " + client_name + ", WELCOME TO THE SSRP SERVER !!!"
+			print("send: ", msg_to_client)
+			print("-----------------------")
+			connection.sendall(msg_to_client.encode())
+			
+			print("CONNECTED USERS:")
+			users_dictionary.update({client_name : client_address})		
+			for key,value in users_dictionary.items():
+				print(key + ", " + value[0] + " " + str(value[1]))
+			print("-----------------------")
 			
 			msg_from_client = connection.recv(256)
 			print("received: ", msg_from_client.decode('utf-8'))
@@ -44,19 +52,16 @@ def main():
 			if(msg_code == b'102'):
 				msg_to_client = handle_forwarding_information_request(msg_from_client)
 				print("sent: ", msg_to_client)
+				print("-----------------------")
 				connection.sendall(msg_to_client.encode())
 			
-			
-			users_dictionary.update({client_name : client_address})		
-			for key,value in users_dictionary.items():
-				print(key + ", " + value[0] + " " + str(value[1]))
-		
 
 
 			data = connection.recv(2048)
 			print("received: ", data.decode('utf-8'))
 			if data:
 				print('sending data back to the client')
+				print("-----------------------")
 				connection.sendall(data)
 			else:
 				print('no more data from', client_address)
@@ -73,18 +78,17 @@ def get_msg_code(msg_from_client):
 		 
 	 
 def handle_recevied_name(msg):
-	return ((msg.split("|"))[1])
+	return ((msg.decode('utf-8').split("|"))[1])
+
 	
 def handle_forwarding_information_request(msg):
-	msg_to_client = ""
+	msg_to_client = "201|0" #false
 	
-	other_side_client_name = (msg.split("|"))[1]
+	other_side_client_name = ((msg.decode('utf-8')).split("|"))[1]
 	for key in users_dictionary.keys():
 		if(other_side_client_name == key):
 			msg_to_client = "201|" + users_dictionary[key][0] + "|" + str(users_dictionary[key][1])
-		
-		else:
-			msg_to_client = "201|0" # false
+			
 		
 	return msg_to_client
 	
