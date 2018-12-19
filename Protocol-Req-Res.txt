@@ -1,0 +1,10 @@
+ALL MESSAGES START WITH A 2 BIT SIZE NUMBER WHICH REPRESENTS THE MESSAGE NUMBER. EVEN NUMBERS ARE SERVER-CLIENT REQUESTS, ODD NUMBERS ARE CLIENT-SERVER REQUESTS.	
+
+Client-Server Requests/Responses:
+1) 01 destinationSocket
+   This message comes from a client who wants to connect to another client directly
+   destinationSocket- the destination socket number
+
+2) 02 destSockLen destSock destPort
+   This message is a response sent by a client after he was requested to a server who asked for his connection information,
+   or in other words his port and ip address (which in our case is the localhost). 
