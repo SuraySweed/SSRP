@@ -68,6 +68,8 @@ namespace TorChatClient
                 {
                     MessageBox.Show("YOU DIDN'T TYPE YOUR NAME!!!");
                 }
+
+                ServerConnection.disconnect();
             }
             else
             {
@@ -91,6 +93,7 @@ namespace TorChatClient
         {
             try
             {
+
                 if (MsgBox.Text == "")
                 {
                     notes.Text = "you need to type a message!";
@@ -101,19 +104,29 @@ namespace TorChatClient
                 }
                 else
                 {
-                    // connect to other fellow 
-                    string msgToSend = "102|" + recepientName.Text;
-                    ServerConnection.SendToServer(msgToSend);
-                    // getting his info (address)--> port, ip
-                    Tuple<string, int> infoOnOtherSide = handleRecvMsg(ServerConnection.ReceiveFromServer());
-                    if (infoOnOtherSide == null)
+                    if (ServerConnection.connection("127.0.0.1", 8820))
                     {
-                        MessageBox.Show("no such name");
+                        string msgToSend = "102|" + recepientName.Text;
+                        ServerConnection.SendToServer(msgToSend);
+                        // getting other fellow's info (address)--> port, ip
+                        Tuple<string, int> infoOnOtherSide = handleRecvMsg(ServerConnection.ReceiveFromServer());
+                        if (infoOnOtherSide == null)
+                        {
+                            MessageBox.Show("no such name");
+                        }
+                        else
+                        {
+                            MessageBox.Show(infoOnOtherSide.Item1 + "\n" + infoOnOtherSide.Item2.ToString());
+                        }
+
+                        ServerConnection.disconnect();
                     }
                     else
                     {
-                        MessageBox.Show(infoOnOtherSide.Item1 + "\n" + infoOnOtherSide.Item2.ToString());
+                        MessageBox.Show("NO CONNECTION!!!");
                     }
+
+                   
                 }
             }
             catch (Exception)
