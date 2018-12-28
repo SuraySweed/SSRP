@@ -29,6 +29,7 @@ namespace TorChatClient
 
         private void exitButton_Click(object sender, EventArgs e)
         {
+            ServerConnection.disconnect();
             this.Close();
         }
 
@@ -46,13 +47,13 @@ namespace TorChatClient
 
         private void ConnectButton_Click(object sender, EventArgs e)
         {
-            if(ServerConnection.connection())
+            if(ServerConnection.connection("127.0.0.1", 8820))
             {
                 if (nameBox.Text != null && nameBox.Text != "")
                 {
                     ServerConnection.SendToServer("100|" + nameBox.Text);
 
-                    string recvMsg = ServerConnection.ReceiveFromServer();
+                    string recvMsg = handleRecvMsg(ServerConnection.ReceiveFromServer());
                     fstMsg.Hide();
                     nameBox.Hide();
                     ConnectButton.Hide();
@@ -104,14 +105,50 @@ namespace TorChatClient
                     string msgToSend = "102|" + recepientName.Text;
                     ServerConnection.SendToServer(msgToSend);
                     // getting his info (address)--> port, ip
-                    string infoOnOtherSide = ServerConnection.ReceiveFromServer();
-                    string[] list = infoOnOtherSide.Split('|');
-
+                    Tuple<string, int> infoOnOtherSide = handleRecvMsg(ServerConnection.ReceiveFromServer());
+                    if (infoOnOtherSide == null)
+                    {
+                        MessageBox.Show("no such name");
+                    }
+                    else
+                    {
+                        MessageBox.Show(infoOnOtherSide.Item1 + "\n" + infoOnOtherSide.Item2.ToString());
+                    }
                 }
             }
             catch (Exception)
             {
 
+            }
+        }
+
+        dynamic handleRecvMsg(string rcvdMSG)
+        {
+            string[] splitedMSG = rcvdMSG.Split('|');
+
+            if(splitedMSG[0] == "201")
+            {
+                return splitedMSG[1];
+            }
+            else if(splitedMSG[0] == "203")
+            {
+                if(splitedMSG.Length == 2)
+                {
+                    return null;
+                }
+                else
+                {
+                    Tuple<string, int> T = new Tuple<string, int>(splitedMSG[1], Int32.Parse(splitedMSG[2].ToString()));
+                    return T;
+                }
+            }
+            else if(splitedMSG[0] == "205")
+            {
+                return 0;
+            }
+            else
+            {
+                return 0;
             }
         }
     }
@@ -126,12 +163,17 @@ namespace TorChatClient
             return client;
         }
 
-        public bool connection()
+        public void disconnect()
+        {
+            client.Close();
+        }
+
+        public bool connection(string ip, int port)
         {
             try
             {
                 client = new TcpClient();
-                IPEndPoint serverEndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 8820);
+                IPEndPoint serverEndPoint = new IPEndPoint(IPAddress.Parse(ip), port);
                 client.Connect(serverEndPoint);
                 clientStream = client.GetStream();
             }

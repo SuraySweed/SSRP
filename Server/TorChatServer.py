@@ -7,9 +7,7 @@ users_dictionary = {}
 list
 
 def main():
-	
 	listening_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
     # Bind the socket to the port
 	server_address = ('localhost', 8820)
 	print("\nWELCOME TO THE SSRP SERVER !!\n-----------------------")
@@ -23,26 +21,22 @@ def main():
 		try:
 			# Wait for a connection
 			print("waiting for a connection\naccepting client...\n-----------------------")
-			
 			connection, client_address = listening_socket.accept()
 			print('connection from', client_address)
-			
 			while(True):
 				msg_from_client = connection.recv(2048)
-				
 				if msg_from_client:
 					print("Received: ", msg_from_client.decode('utf-8'))
 					msg_code = get_msg_code(msg_from_client)
 					handle_msg_from_client(msg_code, msg_from_client, connection, client_address)
-				
 				else:
 					print("no more data from", client_address)
 					break
-				
-		finally:
-            # Clean up the connection
-			connection.close()
-			listening_socket.close()
+		except e:
+			print("Error")
+			
+	connection.close()  
+	listening_socket.close()
      	 
 
 def get_msg_code(msg_from_client):
