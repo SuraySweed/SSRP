@@ -14,7 +14,12 @@ namespace TorChatClient
 {
     public partial class TorChater : Form
     {
+        public Int32 ServerPORT = 8820;
+        public string ServerIPHOST = "127.0.0.1";
         public ClientServerSocket ServerConnection = new ClientServerSocket();
+        public TcpListener meListening = null;
+
+        public Protocol protocol = new Protocol();
 
         public TorChater()
         {
@@ -23,46 +28,45 @@ namespace TorChatClient
 
         private void TorChater_Load(object sender, EventArgs e)
         {
-           
+
 
         }
 
         private void exitButton_Click(object sender, EventArgs e)
         {
-            ServerConnection.disconnect();
+            //ServerConnection.disconnect();
+            if(meListening != null)
+                meListening.Stop();
             this.Close();
-        }
-
-        public string getPaddedNumber(int number, int numberOfDigits)
-        {
-            string toReturn = number.ToString();
-            toReturn = toReturn.PadLeft(numberOfDigits, '0');
-            return toReturn;
         }
 
         private void label1_Click(object sender, EventArgs e)
         {
-            
+
         }
 
         private void ConnectButton_Click(object sender, EventArgs e)
         {
-            if(ServerConnection.connection("127.0.0.1", 8820))
+            if (ServerConnection.connection(ServerIPHOST, ServerPORT))
             {
                 if (nameBox.Text != null && nameBox.Text != "")
                 {
-                    ServerConnection.SendToServer("100|" + nameBox.Text);
+                    ServerConnection.SendToServer(protocol.connectToServerMsg(nameBox.Text));
 
-                    string recvMsg = handleRecvMsg(ServerConnection.ReceiveFromServer());
-                    fstMsg.Hide();
-                    nameBox.Hide();
-                    ConnectButton.Hide();
-                    MessageBox.Show(recvMsg);
-                    SendButton.Show();
-                    scndTxt.Show();
-                    MsgBox.Show();
-                    thrdTxt.Show();
-                    recepientName.Show();
+                    List<string> recvMsg = protocol.handleRecvMsg(ServerConnection.ReceiveFromServer());
+
+                    Int32 port = Int32.Parse(recvMsg[1]); ;
+                    IPAddress ip = IPAddress.Parse(ServerIPHOST);
+
+                    meListening = new TcpListener(ip, port);
+                    MessageBox.Show(recvMsg[0]);
+                    meListening.Start();
+
+                    TorChater torChater = this as TorChater;
+                    ChatForm chatForm = new ChatForm(ref torChater, ref ServerConnection, nameBox.Text);
+
+                    this.Hide();
+                    chatForm.Show();
                 }
                 else
                 {
@@ -79,7 +83,7 @@ namespace TorChatClient
 
         private void nameBox_TextChanged(object sender, EventArgs e)
         {
-            if(nameBox.Text != "")
+            if (nameBox.Text != "")
             {
                 ConnectButton.Enabled = true;
             }
@@ -89,143 +93,101 @@ namespace TorChatClient
             }
         }
 
-        private void SendButton_Click(object sender, EventArgs e)
+        private void timer1_Tick(object sender, EventArgs e)
         {
-            try
-            {
+            //Byte[] bytes = new Byte[256];
+            //String data = null;
 
-                if (MsgBox.Text == "")
+            //Console.Write("Waiting for a connection... ");
+
+            //TcpClient client = meListening.AcceptTcpClient();
+            //Console.WriteLine("Connected!");
+
+            //data = null;
+
+            //NetworkStream stream = client.GetStream();
+
+            //int i;
+
+            //while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
+            //{
+            //    data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
+            //    //Console.WriteLine("Received: {0}", data);
+
+
+            //    data = data.ToUpper();
+
+            //    byte[] msg = System.Text.Encoding.ASCII.GetBytes(data);
+
+            //    //// Send back a response.
+            //    //stream.Write(msg, 0, msg.Length);
+            //    //Console.WriteLine("Sent: {0}", data);
+            //}
+
+        }
+
+        public class ClientServerSocket
+        {
+            private TcpClient client;
+            private NetworkStream clientStream;
+
+            public TcpClient getClient()
+            {
+                return client;
+            }
+
+            public void disconnect()
+            {
+                client.Close();
+            }
+
+            public bool connection(string ip, int port)
+            {
+                try
                 {
-                    notes.Text = "you need to type a message!";
+                    client = new TcpClient();
+                    IPEndPoint serverEndPoint = new IPEndPoint(IPAddress.Parse(ip), port);
+                    client.Connect(serverEndPoint);
+                    clientStream = client.GetStream();
+
                 }
-                else if (recepientName.Text == "")
+                catch (Exception e)
                 {
-                    notes.Text = "you need to type the destination!";
+
+                }
+
+                if (client.Connected)
+                {
+                    return true;
                 }
                 else
                 {
-                    if (ServerConnection.connection("127.0.0.1", 8820))
-                    {
-                        string msgToSend = "102|" + recepientName.Text;
-                        ServerConnection.SendToServer(msgToSend);
-                        // getting other fellow's info (address)--> port, ip
-                        Tuple<string, int> infoOnOtherSide = handleRecvMsg(ServerConnection.ReceiveFromServer());
-                        if (infoOnOtherSide == null)
-                        {
-                            MessageBox.Show("no such name");
-                        }
-                        else
-                        {
-                            MessageBox.Show(infoOnOtherSide.Item1 + "\n" + infoOnOtherSide.Item2.ToString());
-                        }
-
-                        ServerConnection.disconnect();
-                    }
-                    else
-                    {
-                        MessageBox.Show("NO CONNECTION!!!");
-                    }
-
-                   
+                    return false;
                 }
             }
-            catch (Exception)
-            {
 
+            public void SendToServer(string msgToServer)
+            {
+                byte[] buffer = new ASCIIEncoding().GetBytes(msgToServer);
+                clientStream.Write(buffer, 0, buffer.Length);
+                clientStream.Flush();
             }
-        }
 
-        dynamic handleRecvMsg(string rcvdMSG)
-        {
-            string[] splitedMSG = rcvdMSG.Split('|');
-
-            if(splitedMSG[0] == "201")
+            public string ReceiveFromServer()
             {
-                return splitedMSG[1];
-            }
-            else if(splitedMSG[0] == "203")
-            {
-                if(splitedMSG.Length == 2)
+                try
                 {
-                    return null;
+                    byte[] bufferln = new byte[4800];
+                    int bytesRead = clientStream.Read(bufferln, 0, 4800);
+                    string message = new ASCIIEncoding().GetString(bufferln);
+                    return message;
                 }
-                else
+                catch (Exception e)
                 {
-                    Tuple<string, int> T = new Tuple<string, int>(splitedMSG[1], Int32.Parse(splitedMSG[2].ToString()));
-                    return T;
+                    MessageBox.Show("Connection Error, " + e.ToString());
                 }
+                return "";
             }
-            else if(splitedMSG[0] == "205")
-            {
-                return 0;
-            }
-            else
-            {
-                return 0;
-            }
-        }
-    }
-
-    public class ClientServerSocket
-    {
-        private TcpClient client;
-        private NetworkStream clientStream;
-
-        public TcpClient getClient()
-        {
-            return client;
-        }
-
-        public void disconnect()
-        {
-            client.Close();
-        }
-
-        public bool connection(string ip, int port)
-        {
-            try
-            {
-                client = new TcpClient();
-                IPEndPoint serverEndPoint = new IPEndPoint(IPAddress.Parse(ip), port);
-                client.Connect(serverEndPoint);
-                clientStream = client.GetStream();
-            }
-            catch (Exception e)
-            {
-
-            }
-
-            if (client.Connected)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        public void SendToServer(string msgToServer)
-        {
-            byte[] buffer = new ASCIIEncoding().GetBytes(msgToServer);
-            clientStream.Write(buffer, 0, buffer.Length);
-            clientStream.Flush();
-        }
-
-        public string ReceiveFromServer()
-        {
-            try
-            {
-                byte[] bufferln = new byte[4800];
-                int bytesRead = clientStream.Read(bufferln, 0, 4800);
-                string message = new ASCIIEncoding().GetString(bufferln);
-                return message;
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show("Connection Error, " + e.ToString());
-            }
-            return "";
         }
     }
 }

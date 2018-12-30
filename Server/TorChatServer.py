@@ -32,7 +32,7 @@ def main():
 				else:
 					print("no more data from", client_address)
 					break
-		except e:
+		except:
 			print("Error")
 			
 	connection.close()  
@@ -47,7 +47,7 @@ def handle_recevied_name(msg, connection, client_address):
 	client_name = (msg.decode('utf-8').split("|"))[1]
 	users_dictionary.update({client_name : client_address})		
 	
-	msg_to_client = "201|HEY " + client_name + ", WELCOME TO THE SSRP SERVER !!!"
+	msg_to_client = "201|HEY " + client_name + ", WELCOME TO THE SSRP SERVER !!!" + "|" + str(client_address[1])
 	print("send: ", msg_to_client)
 	print("-----------------------")
 	connection.sendall(msg_to_client.encode())
