@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -16,9 +17,11 @@ namespace TorChatClient
         private string otherClientName;
         private string recepientIP;
         private int recepientPORT;
+        bool threadCondition = true;
 
         TorChater _torChater = new TorChater();
         TorChater.ClientServerSocket _serverConnect = new TorChater.ClientServerSocket();
+        Thread thread;
 
 
         public ChatForm(ref TorChater torChater, ref TorChater.ClientServerSocket clientServerSocket, string mainName)
@@ -30,12 +33,15 @@ namespace TorChatClient
 
         private void ChatForm_Load(object sender, EventArgs e)
         {
-
+            thread = new Thread(new ThreadStart(startListening));
+            thread.Start();
         }
 
         private void exitBut_Click(object sender, EventArgs e)
         {
-            timer1.Stop();
+            threadCondition = false;
+           // _serverConnect.disconnect();
+            thread.Join();
             _torChater.Close();
             _torChater.meListening.Stop();
             this.Close();
@@ -57,6 +63,7 @@ namespace TorChatClient
         {
             if (_serverConnect.connection(_torChater.ServerIPHOST, _torChater.ServerPORT))
             {
+
                 _serverConnect.SendToServer(_torChater.protocol.sendRecepientNameMsg(NameOfOther.Text));
 
                 List<string> infoOnOtherSide = _torChater.protocol.handleRecvMsg(_serverConnect.ReceiveFromServer());
@@ -75,6 +82,7 @@ namespace TorChatClient
                     otherName.Text = NameOfOther.Text;
                     otherClientName = NameOfOther.Text;
                     otherName.Show();
+                   
                 }
 
                 _serverConnect.disconnect();
@@ -85,6 +93,42 @@ namespace TorChatClient
             }
 
 
+        }
+        private void startListening()
+        {
+            while (threadCondition)
+            {
+                Byte[] bytes = new Byte[256];
+                String data = null;
+
+                Console.Write("Waiting for a connection... ");
+
+                TcpClient client = _torChater.meListening.AcceptTcpClient();
+                Console.WriteLine("Connected!");
+
+                data = null;
+
+                NetworkStream stream = client.GetStream();
+
+                int i;
+
+                while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
+                {
+                    data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
+                    //Console.WriteLine("Received: {0}", data);
+                    ChatText.Text += data;
+                    ChatText.Text += "\n";
+
+
+                    data = data.ToUpper();
+
+                    byte[] msg = System.Text.Encoding.ASCII.GetBytes(data);
+
+                    //// Send back a response.
+                    //stream.Write(msg, 0, msg.Length);
+                    //Console.WriteLine("Sent: {0}", data);
+                }
+            }
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -104,6 +148,7 @@ namespace TorChatClient
             if (_serverConnect.connection(recepientIP, recepientPORT))
             {
                 _serverConnect.SendToServer(messageToSendBox.Text);
+                _serverConnect.disconnect();
             }
             else
             {
@@ -113,36 +158,6 @@ namespace TorChatClient
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            Byte[] bytes = new Byte[256];
-            String data = null;
-
-            Console.Write("Waiting for a connection... ");
-
-            TcpClient client = _torChater.meListening.AcceptTcpClient();
-            Console.WriteLine("Connected!");
-
-            data = null;
-
-            NetworkStream stream = client.GetStream();
-
-            int i;
-
-            while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
-            {
-                data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
-                //Console.WriteLine("Received: {0}", data);
-                ChatText.Text += data;
-                ChatText.Text += "\n";
-
-
-                data = data.ToUpper();
-
-                byte[] msg = System.Text.Encoding.ASCII.GetBytes(data);
-
-                //// Send back a response.
-                //stream.Write(msg, 0, msg.Length);
-                //Console.WriteLine("Sent: {0}", data);
-            }
         }
     }
 }
