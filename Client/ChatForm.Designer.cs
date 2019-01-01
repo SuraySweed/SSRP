@@ -136,7 +136,7 @@
             this.disconnectButton.Font = new System.Drawing.Font("Miriam Fixed", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.disconnectButton.Location = new System.Drawing.Point(454, 114);
             this.disconnectButton.Name = "disconnectButton";
-            this.disconnectButton.Size = new System.Drawing.Size(75, 23);
+            this.disconnectButton.Size = new System.Drawing.Size(81, 23);
             this.disconnectButton.TabIndex = 9;
             this.disconnectButton.Text = "Change";
             this.disconnectButton.UseVisualStyleBackColor = true;

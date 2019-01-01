@@ -44,9 +44,9 @@ namespace TorChatClient
         {
             threadCondition = false;
             _serverConnect.disconnect();
-            thread.Join();
             _torChater.Close();
             _torChater.meListening.Stop();
+            thread.Join();
             this.Close();
         }
 

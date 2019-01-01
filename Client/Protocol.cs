@@ -26,8 +26,9 @@ namespace TorChatClient
             {
                 List<string> listOfInformation = new List<string>();
                 listOfInformation.Add(splitedMSG[1]);
-                string port = (splitedMSG[2].Split('\0'))[0];
-                listOfInformation.Add(port);
+                listOfInformation.Add(splitedMSG[2]);
+                string ip = (splitedMSG[3].Split('\0'))[0];
+                listOfInformation.Add(ip);
 
                 return listOfInformation;
             }

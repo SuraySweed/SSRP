@@ -15,7 +15,7 @@ namespace TorChatClient
     public partial class TorChater : Form
     {
         public Int32 ServerPORT = 8820;
-        public string ServerIPHOST = "127.0.0.1";
+        public string ServerIPHOST = "10.0.0.16";
         public ClientServerSocket ServerConnection = new ClientServerSocket();
         public TcpListener meListening = null;
 
@@ -55,13 +55,14 @@ namespace TorChatClient
 
                     List<string> recvMsg = protocol.handleRecvMsg(ServerConnection.ReceiveFromServer());
 
-                    Int32 port = Int32.Parse(recvMsg[1]); ;
-                    IPAddress ip = IPAddress.Parse(ServerIPHOST);
+                    Int32 port = Int32.Parse(recvMsg[1]); 
+                    IPAddress ip = IPAddress.Parse(recvMsg[2]);
+                 
 
                     meListening = new TcpListener(ip, port);
                     MessageBox.Show(recvMsg[0]);
                     meListening.Start();
-
+                 
                     TorChater torChater = this as TorChater;
                     ChatForm chatForm = new ChatForm(ref torChater, ref ServerConnection, nameBox.Text);
 
