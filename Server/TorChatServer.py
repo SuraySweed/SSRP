@@ -14,7 +14,7 @@ def main():
 
 	listening_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     # Bind the socket to the port
-	server_address = ('localhost', 8820)
+	server_address = (HOST, PORT)
 	print("\nWELCOME TO THE SSRP SERVER !!\n-----------------------")
 	print ("starting up on port", server_address)
 	listening_socket.bind(server_address)
@@ -63,10 +63,11 @@ def get_recepient_client_information(name):
 	cursor.execute(get_recepient_information_sql_command)
 	result = cursor.fetchall() #[()()()()] list of tuples
 	
-	connectToDB.commit()
+	if(result):
+		return result[0][2], result[0][3]
 	
-	return (result[0][2], result[0][3])
-	
+	else:
+		return 0	
 
 def is_User_In_The_DB(name):
 	sql_command = "SELECT * from users WHERE name = " + "'" + name + "';"
@@ -113,13 +114,13 @@ def handle_forwarding_information_request(msg_from_client, connection, client_ad
 	msg_to_client = "203|0" #false
 	#ip, port
 	other_side_client_name = ((msg_from_client.decode('utf-8')).split("|"))[1]
-	#for key in users_dictionary.keys():
-		#if(other_side_client_name == key):
-			#msg_to_client = "203|" + users_dictionary[key][0] + "|" + str(users_dictionary[key][1])
 	
-	recepient_client_IP, recepient_client_PORT = get_recepient_client_information(other_side_client_name)
-	msg_to_client = "203|" + recepient_client_IP + "|" + recepient_client_PORT
-
+	data = get_recepient_client_information(other_side_client_name)
+	
+	if(data != 0):
+		msg_to_client = "203|" + str(data[0]) + "|" + str(data[1])
+		
+	
 	print("sent: ", msg_to_client)
 	print("-----------------------")
 

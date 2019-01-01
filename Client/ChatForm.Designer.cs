@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.ChatText = new System.Windows.Forms.RichTextBox();
             this.messageToSendBox = new System.Windows.Forms.TextBox();
             this.HelppingText = new System.Windows.Forms.Label();
@@ -38,7 +37,7 @@
             this.moreHelp = new System.Windows.Forms.Label();
             this.getNameButton = new System.Windows.Forms.Button();
             this.otherName = new System.Windows.Forms.Label();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.disconnectButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // ChatText
@@ -132,15 +131,24 @@
             this.otherName.TabIndex = 8;
             this.otherName.Visible = false;
             // 
-            // timer1
+            // disconnectButton
             // 
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            this.disconnectButton.Font = new System.Drawing.Font("Miriam Fixed", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.disconnectButton.Location = new System.Drawing.Point(454, 114);
+            this.disconnectButton.Name = "disconnectButton";
+            this.disconnectButton.Size = new System.Drawing.Size(75, 23);
+            this.disconnectButton.TabIndex = 9;
+            this.disconnectButton.Text = "Change";
+            this.disconnectButton.UseVisualStyleBackColor = true;
+            this.disconnectButton.Visible = false;
+            this.disconnectButton.Click += new System.EventHandler(this.disconnectButton_Click);
             // 
             // ChatForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(625, 471);
+            this.Controls.Add(this.disconnectButton);
             this.Controls.Add(this.otherName);
             this.Controls.Add(this.getNameButton);
             this.Controls.Add(this.moreHelp);
@@ -169,6 +177,6 @@
         private System.Windows.Forms.Label moreHelp;
         private System.Windows.Forms.Button getNameButton;
         private System.Windows.Forms.Label otherName;
-        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Button disconnectButton;
     }
 }
