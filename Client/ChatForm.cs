@@ -64,7 +64,7 @@ namespace TorChatClient
 
         private void getNameButton_Click(object sender, EventArgs e)
         {
-            if (_serverConnect.connection(_torChater.ServerIPHOST, _torChater.ServerPORT))
+            if (_serverConnect.connection(_torChater.getServerIP(), _torChater.ServerPORT))
             {
 
                 _serverConnect.SendToServer(_torChater.protocol.sendRecepientNameMsg(NameOfOther.Text));

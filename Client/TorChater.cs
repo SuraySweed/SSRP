@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Net;
@@ -15,7 +16,6 @@ namespace TorChatClient
     public partial class TorChater : Form
     {
         public Int32 ServerPORT = 8820;
-        public string ServerIPHOST = "10.0.0.16";
         public ClientServerSocket ServerConnection = new ClientServerSocket();
         public TcpListener meListening = null;
 
@@ -47,7 +47,7 @@ namespace TorChatClient
 
         private void ConnectButton_Click(object sender, EventArgs e)
         {
-            if (ServerConnection.connection(ServerIPHOST, ServerPORT))
+            if (ServerConnection.connection(getServerIP(), ServerPORT))
             {
                 if (nameBox.Text != null && nameBox.Text != "")
                 {
@@ -92,6 +92,24 @@ namespace TorChatClient
             {
                 ConnectButton.Enabled = false;
             }
+        }
+
+        public string getServerIP()
+        {
+            List<string> list = new List<string>();
+
+            Process processObject = new Process();
+            processObject.StartInfo.UseShellExecute = false;
+            processObject.StartInfo.RedirectStandardOutput = true;
+            processObject.StartInfo.FileName = "ipconfig.exe";
+            processObject.Start();
+            processObject.WaitForExit();
+            string output = processObject.StandardOutput.ReadToEnd();
+
+            string[] lines = output.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+            string IPv4 = lines[42].Split(':')[1].Trim();
+
+            return IPv4;
         }
 
         private void timer1_Tick(object sender, EventArgs e)
