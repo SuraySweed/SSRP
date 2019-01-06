@@ -64,17 +64,23 @@ namespace TorChatClient
 
         private void getNameButton_Click(object sender, EventArgs e)
         {
-            if (_serverConnect.connection(_torChater.getServerIP(), _torChater.ServerPORT))
+            if (_serverConnect.connection(_torChater.ServerIP, _torChater.ServerPORT))
             {
 
                 _serverConnect.SendToServer(_torChater.protocol.sendRecepientNameMsg(NameOfOther.Text));
 
-                List<string> infoOnOtherSide = _torChater.protocol.handleRecvMsg(_serverConnect.ReceiveFromServer());
+                dynamic infoOnOtherSide = _torChater.protocol.handleRecvMsg(_serverConnect.ReceiveFromServer());
 
                 if (infoOnOtherSide == null)
                 {
                     MessageBox.Show("no such name");
                 }
+                /*
+                else if (infoOnOtherSide == "1")
+                {
+                    MessageBox.Show("You cant to open conversation with your self!");
+                }
+                */
                 else
                 {
                     //MessageBox.Show(infoOnOtherSide[0] + "\n" + infoOnOtherSide[1]);

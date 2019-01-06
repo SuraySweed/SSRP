@@ -18,6 +18,7 @@ namespace TorChatClient
         public Int32 ServerPORT = 8820;
         public ClientServerSocket ServerConnection = new ClientServerSocket();
         public TcpListener meListening = null;
+        public string ServerIP = "10.40.178.32";
 
         public Protocol protocol = new Protocol();
 
@@ -47,7 +48,7 @@ namespace TorChatClient
 
         private void ConnectButton_Click(object sender, EventArgs e)
         {
-            if (ServerConnection.connection(getServerIP(), ServerPORT))
+            if (ServerConnection.connection(ServerIP, ServerPORT))
             {
                 if (nameBox.Text != null && nameBox.Text != "")
                 {
@@ -93,7 +94,7 @@ namespace TorChatClient
                 ConnectButton.Enabled = false;
             }
         }
-
+        /*
         public string getServerIP()
         {
             List<string> list = new List<string>();
@@ -111,7 +112,7 @@ namespace TorChatClient
 
             return IPv4;
         }
-
+        */
         private void timer1_Tick(object sender, EventArgs e)
         {
             //Byte[] bytes = new Byte[256];
