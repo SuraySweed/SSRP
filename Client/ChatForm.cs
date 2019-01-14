@@ -20,6 +20,7 @@ namespace TorChatClient
         private int recepientPORT;
         bool threadCondition = true;
         private string _mainName;
+        private List<Tuple<string, Int32>> _currentRoute;
 
         TorChater _torChater = new TorChater();
         TorChater.ClientServerSocket _serverConnect = new TorChater.ClientServerSocket();
@@ -69,7 +70,7 @@ namespace TorChatClient
 
                 _serverConnect.SendToServer(_torChater.protocol.sendRecepientNameMsg(NameOfOther.Text));
 
-                List<string> infoOnOtherSide = _torChater.protocol.handleRecvMsg(_serverConnect.ReceiveFromServer());
+                List<Tuple<string,Int32>> infoOnOtherSide = _torChater.protocol.handleRecvMsg(_serverConnect.ReceiveFromServer());
 
                 if (infoOnOtherSide == null)
                 {
@@ -77,9 +78,11 @@ namespace TorChatClient
                 }
                 else
                 {
+                    _currentRoute = infoOnOtherSide;
                     //MessageBox.Show(infoOnOtherSide[0] + "\n" + infoOnOtherSide[1]);
-                    recepientIP = infoOnOtherSide[0];
-                    recepientPORT = Int32.Parse(infoOnOtherSide[1]);
+                    recepientIP = infoOnOtherSide[infoOnOtherSide.Count].Item1;
+                    recepientPORT = infoOnOtherSide[infoOnOtherSide.Count].Item2;
+                    _currentRoute.Remove(new Tuple<string, int>(recepientIP, recepientPORT));
                     getNameButton.Hide();
                     NameOfOther.Hide();
                     otherName.Text = NameOfOther.Text;
@@ -119,9 +122,8 @@ namespace TorChatClient
                 while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
                 {
                     data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
-                    ChatText.Text += data;
-                    ChatText.Text += "\n";
 
+                    _torChater.protocol.handleRecvMsg(data);
 
                     data = data.ToUpper();
 
@@ -149,7 +151,7 @@ namespace TorChatClient
         {
             if (_serverConnect.connection(recepientIP, recepientPORT))
             {
-                _serverConnect.SendToServer(_mainName + " says: " + messageToSendBox.Text);
+                _serverConnect.SendToServer(_torChater.protocol.messageToBeSent(messageToSendBox.Text, _currentRoute));
                 _serverConnect.disconnect();
             }
             else
@@ -168,6 +170,46 @@ namespace TorChatClient
             otherName.Hide();
             disconnectButton.Hide();
 
+        }
+
+        private dynamic handleMessagesFromOtherClients(string message)
+        {
+            string[] splitedMSG = message.Split('|');
+            if(splitedMSG[0] == "150") // forward
+            {
+                recepientPORT = Int32.Parse(splitedMSG[splitedMSG.Length].Split(',')[1]);
+                recepientIP = splitedMSG[splitedMSG.Length].Split(',')[0];
+
+                string msgToSend = null;
+
+                if (splitedMSG.Length == 3)
+                    msgToSend = "151";
+                else
+                    msgToSend = "150";
+
+                for (int i = 1; i < splitedMSG.Length - 1; i++) 
+                {
+                    msgToSend += splitedMSG[i];
+                }
+
+                if (_serverConnect.connection(recepientIP, recepientPORT))
+                {
+                    _serverConnect.SendToServer(msgToSend);
+                    _serverConnect.disconnect();
+                }
+                else
+                {
+                    MessageBox.Show("NO CONNECTION WITH OTHER CLIENT!!!");
+                }
+                return 0;
+            }
+            else if(splitedMSG[0] == "151")// got a message
+            {
+                ChatText.Text += splitedMSG[1];
+                ChatText.Text += "\n";
+                return null;
+            }
+            return 0;
         }
     }
 }

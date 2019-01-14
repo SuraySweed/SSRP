@@ -12,9 +12,22 @@ namespace TorChatClient
         {
             return "100|" + nickName;
         }
+
         public string sendRecepientNameMsg(string recepientName)
         {
             return "102|" + recepientName;
+        }
+
+        public string messageToBeSent(string msg, List<Tuple<string, Int32>> listOfAddresses)
+        {
+            string msgToSend = "150|" + msg;
+
+            for(int i=0;i<listOfAddresses.Count; i++)
+            {
+                msgToSend += listOfAddresses[i].ToString() + "|";
+            }
+
+            return msgToSend;
         }
 
 
@@ -32,7 +45,7 @@ namespace TorChatClient
 
                 return listOfInformation;
             }
-            else if (splitedMSG[0] == "203") // getting other dude's address
+            else if (splitedMSG[0] == "203") // getting the route to the other dude
             {
                 if (splitedMSG.Length == 2)
                 {
@@ -40,10 +53,14 @@ namespace TorChatClient
                 }
                 else
                 {
-                    List<string> recvMsg = new List<string>();
-                    recvMsg.Add(splitedMSG[1]);
-                    string port = (splitedMSG[2].Split('\0'))[0];
-                    recvMsg.Add(port);
+                    List<Tuple<string,Int32>> recvMsg = new List<Tuple<string, Int32>>();
+                    
+                    for (int i = 1; i < splitedMSG.Length - 1; i++)
+                    {
+                        Tuple<string, Int32> tuple = new Tuple<string, int>(splitedMSG[i].Split(',')[0], Int32.Parse(splitedMSG[i].Split(',')[1]));
+                        
+                        recvMsg.Add(tuple);
+                    }
 
                     return recvMsg;
                 }

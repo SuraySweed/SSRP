@@ -15,7 +15,7 @@ namespace TorChatClient
     public partial class TorChater : Form
     {
         public Int32 ServerPORT = 8820;
-        public string ServerIPHOST = "10.0.0.16";
+        public string ServerIPHOST = "127.0.0.1";
         public ClientServerSocket ServerConnection = new ClientServerSocket();
         public TcpListener meListening = null;
 
