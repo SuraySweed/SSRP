@@ -4,7 +4,7 @@ import subprocess
 
 PORT = 8820
 USERS_DB_NAME = "Users.db"
-ServerIP = "10.40.178.32"
+ServerIP = "10.0.0.6"
 
 users_dictionary = {}
 
@@ -99,6 +99,21 @@ def update_IP_PORT_for_user(name, IP, PORT):
 
 	None
 	
+def clients_route_by_bulding_trace(sender_name):
+	sql_command = "SELECT * from users where name != " + '"' + sender_name + '";'
+	clients_data = ""
+
+	cursor.execute(sql_command)
+	result = cursor.fetchall()
+	connectToDB.commit()
+
+	if result:
+		for item in result:
+			clients_data = clients_data + item[2] + "," + str(item[3]) + "|"
+	else:
+		return 0
+	return clients_data
+
 def handle_recevied_name(msg, connection, client_address):
 	client_name = (msg.decode('utf-8').split("|"))[1]
 	check = is_User_In_The_DB(client_name)
@@ -127,7 +142,8 @@ def handle_forwarding_information_request(msg_from_client, connection, client_ad
 	other_side_client_name = ((msg_from_client.decode('utf-8')).split("|"))[1]
 	
 	data = get_recepient_client_information(other_side_client_name)
-	
+	route_trace = clients_route_by_bulding_trace(other_side_client_name)
+
 	#if(data != 0):
 		#if(data[1] != client_address[1]):
 			#msg_to_client = "203|" + data[0] + "|" + str(data[1])
@@ -135,8 +151,8 @@ def handle_forwarding_information_request(msg_from_client, connection, client_ad
 		#elif(data[1] == client_address[1]):
 			#msg_to_client = "203|1"
 			#
-	if(data):
-		msg_to_client = "203|" + data[0] + "|" + str(data[1])
+	if(data and route_trace != 0):
+		msg_to_client = "203|" + data[0] + "," + str(data[1]) + "|" + route_trace;
 
 
 	print("sent: ", msg_to_client)
@@ -145,7 +161,6 @@ def handle_forwarding_information_request(msg_from_client, connection, client_ad
 	connection.sendall(msg_to_client.encode())
 	
 	None
-
 
 def handle_msg_from_client(msg_code, msg_from_client, connection, client_address):
 	
