@@ -1,9 +1,10 @@
 import socket
 import sqlite3
+import subprocess
 
-HOST = '127.0.0.1'
 PORT = 8820
 USERS_DB_NAME = "Users.db"
+ServerIP = "10.40.178.32"
 
 users_dictionary = {}
 
@@ -14,7 +15,7 @@ def main():
 
 	listening_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     # Bind the socket to the port
-	server_address = (HOST, PORT)
+	server_address = (ServerIP, PORT)
 	print("\nWELCOME TO THE SSRP SERVER !!\n-----------------------")
 	print ("starting up on port", server_address)
 	listening_socket.bind(server_address)
@@ -46,6 +47,16 @@ def main():
 	listening_socket.close()
      	 
 
+#def get_local_IP_from_the_cmd():
+#	IPv4 = ''
+#	ipconfig_object = subprocess.Popen(["ipconfig"], stdout=subprocess.PIPE)
+#	ipconfig_string = ipconfig_object.stdout.read().decode('utf-8')
+#	ipconfig_list = ipconfig_string.split("\n")
+#	IPv4 = ((ipconfig_list[42].split(":")[1]).split('\r')[0]).strip() # Remove all whitespace 
+	
+#	return IPv4
+
+	
 def get_msg_code(msg_from_client):
 	return msg_from_client[0:3]
 		 
@@ -64,7 +75,7 @@ def get_recepient_client_information(name):
 	result = cursor.fetchall() #[()()()()] list of tuples
 	
 	if(result):
-		return result[0][2], result[0][3]
+		return (result[0][2], result[0][3])
 	
 	else:
 		return 0	
@@ -102,7 +113,7 @@ def handle_recevied_name(msg, connection, client_address):
 		print("Inserted To the DATABASE")
 		print("-----------------------")
 	
-	msg_to_client = "201|HEY " + client_name + ", WELCOME TO THE SSRP SERVER !!!" + "|" + str(client_address[1])
+	msg_to_client = "201|HEY " + client_name + ", WELCOME TO THE SSRP SERVER !!!" + "|" + str(client_address[1]) + "|" + client_address[0]
 	print("send: ", msg_to_client)
 	print("-----------------------")
 	connection.sendall(msg_to_client.encode()) 
@@ -117,10 +128,17 @@ def handle_forwarding_information_request(msg_from_client, connection, client_ad
 	
 	data = get_recepient_client_information(other_side_client_name)
 	
-	if(data != 0):
-		msg_to_client = "203|" + str(data[0]) + "|" + str(data[1])
-		
-	
+	#if(data != 0):
+		#if(data[1] != client_address[1]):
+			#msg_to_client = "203|" + data[0] + "|" + str(data[1])
+			
+		#elif(data[1] == client_address[1]):
+			#msg_to_client = "203|1"
+			#
+	if(data):
+		msg_to_client = "203|" + data[0] + "|" + str(data[1])
+
+
 	print("sent: ", msg_to_client)
 	print("-----------------------")
 
