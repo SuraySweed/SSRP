@@ -19,4 +19,3 @@ C:\Users\magshimim\Desktop\SSRP_Project\TorChatClient\TorChatClient\obj\Debug\To
 C:\Users\magshimim\Desktop\SSRP_Project\TorChatClient\TorChatClient\obj\Debug\TorChatClient.exe
 C:\Users\magshimim\Desktop\SSRP_Project\TorChatClient\TorChatClient\obj\Debug\TorChatClient.pdb
 C:\Users\magshimim\Desktop\HomeWorks\3rd YEAR\Project files\TorChatClient\TorChatClient\obj\Debug\TorChatClient.ChatForm.resources
-C:\Users\magshimim\Desktop\SSRP_Project\TorChatClient\TorChatClient\obj\Debug\TorChatClient.ChatForm.resources

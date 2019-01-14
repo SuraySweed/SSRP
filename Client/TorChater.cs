@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Net;
@@ -16,13 +15,9 @@ namespace TorChatClient
     public partial class TorChater : Form
     {
         public Int32 ServerPORT = 8820;
-<<<<<<< HEAD
         public string ServerIPHOST = "127.0.0.1";
-=======
->>>>>>> 82c82ba013c60690c5b5a2ec42ec5f47b48f42d9
         public ClientServerSocket ServerConnection = new ClientServerSocket();
         public TcpListener meListening = null;
-        public string ServerIP = "10.40.178.32";
 
         public Protocol protocol = new Protocol();
 
@@ -52,7 +47,7 @@ namespace TorChatClient
 
         private void ConnectButton_Click(object sender, EventArgs e)
         {
-            if (ServerConnection.connection(ServerIP, ServerPORT))
+            if (ServerConnection.connection(ServerIPHOST, ServerPORT))
             {
                 if (nameBox.Text != null && nameBox.Text != "")
                 {
@@ -98,25 +93,7 @@ namespace TorChatClient
                 ConnectButton.Enabled = false;
             }
         }
-        /*
-        public string getServerIP()
-        {
-            List<string> list = new List<string>();
 
-            Process processObject = new Process();
-            processObject.StartInfo.UseShellExecute = false;
-            processObject.StartInfo.RedirectStandardOutput = true;
-            processObject.StartInfo.FileName = "ipconfig.exe";
-            processObject.Start();
-            processObject.WaitForExit();
-            string output = processObject.StandardOutput.ReadToEnd();
-
-            string[] lines = output.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
-            string IPv4 = lines[42].Split(':')[1].Trim();
-
-            return IPv4;
-        }
-        */
         private void timer1_Tick(object sender, EventArgs e)
         {
             //Byte[] bytes = new Byte[256];

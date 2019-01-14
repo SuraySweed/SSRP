@@ -47,32 +47,9 @@ namespace TorChatClient
             }
             else if (splitedMSG[0] == "203") // getting the route to the other dude
             {
-                /*
                 if (splitedMSG.Length == 2)
                 {
-                    string status = (splitedMSG[1].Split('\0'))[0];
-                    if (status == "0")
-                    {
-                        return status;
-                    }
-                    else if (status == "1")
-                    {
-                        return status;
-                    }
-                }
-                else
-                {
-                    List<string> recvMsg = new List<string>();
-                    recvMsg.Add(splitedMSG[1]);
-                    string port = (splitedMSG[2].Split('\0'))[0];
-                    recvMsg.Add(port);
-
-                    return recvMsg;
-                }
-                */
-                if(splitedMSG.Length == 2)
-                {
-                    return "0";
+                    return null;
                 }
                 else
                 {
@@ -96,8 +73,6 @@ namespace TorChatClient
             {
                 return 0;
             }
-
-            return null;
         }
     }
 }
