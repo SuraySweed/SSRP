@@ -99,8 +99,8 @@ def update_IP_PORT_for_user(name, IP, PORT):
 
 	None
 	
-def clients_route_by_bulding_trace(sender_name):
-	sql_command = "SELECT * from users where name != " + '"' + sender_name + '";'
+def clients_route_by_bulding_trace(port):
+	sql_command = "SELECT * from users where port != " + port + ';'
 	clients_data = ""
 
 	cursor.execute(sql_command)
@@ -142,7 +142,7 @@ def handle_forwarding_information_request(msg_from_client, connection, client_ad
 	other_side_client_name = ((msg_from_client.decode('utf-8')).split("|"))[1]
 	
 	data = get_recepient_client_information(other_side_client_name)
-	route_trace = clients_route_by_bulding_trace(other_side_client_name)
+	route_trace = clients_route_by_bulding_trace(str(client_address[1]))
 
 	#if(data != 0):
 		#if(data[1] != client_address[1]):
@@ -152,7 +152,7 @@ def handle_forwarding_information_request(msg_from_client, connection, client_ad
 			#msg_to_client = "203|1"
 			#
 	if(data and route_trace != 0):
-		msg_to_client = "203|" + data[0] + "," + str(data[1]) + "|" + route_trace;
+		msg_to_client = "203|" + route_trace;
 
 
 	print("sent: ", msg_to_client)
