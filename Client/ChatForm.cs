@@ -68,7 +68,7 @@ namespace TorChatClient
             if (_serverConnect.connection(_torChater.ServerIPHOST, _torChater.ServerPORT))
             {
 
-                _serverConnect.SendToServer(_torChater.protocol.sendRecepientNameMsg(NameOfOther.Text));
+                _serverConnect.SendToServer(_torChater.protocol.sendRecepientNameMsg(_mainName , NameOfOther.Text));
 
                 List<Tuple<string,Int32>> infoOnOtherSide = _torChater.protocol.handleRecvMsg(_serverConnect.ReceiveFromServer());
 
@@ -80,8 +80,8 @@ namespace TorChatClient
                 {
                     _currentRoute = infoOnOtherSide;
                     //MessageBox.Show(infoOnOtherSide[0] + "\n" + infoOnOtherSide[1]);
-                    recepientIP = infoOnOtherSide[infoOnOtherSide.Count].Item1;
-                    recepientPORT = infoOnOtherSide[infoOnOtherSide.Count].Item2;
+                    recepientIP = infoOnOtherSide[infoOnOtherSide.Count - 1].Item1;
+                    recepientPORT = infoOnOtherSide[infoOnOtherSide.Count - 1].Item2;
                     _currentRoute.Remove(new Tuple<string, int>(recepientIP, recepientPORT));
                     getNameButton.Hide();
                     NameOfOther.Hide();
@@ -177,8 +177,8 @@ namespace TorChatClient
             string[] splitedMSG = message.Split('|');
             if(splitedMSG[0] == "150") // forward
             {
-                recepientPORT = Int32.Parse(splitedMSG[splitedMSG.Length].Split(',')[1]);
-                recepientIP = splitedMSG[splitedMSG.Length].Split(',')[0];
+                recepientPORT = Int32.Parse(splitedMSG[splitedMSG.Length - 2].Split(',')[1]);
+                recepientIP = splitedMSG[splitedMSG.Length - 2].Split(',')[0];
 
                 string msgToSend = null;
 

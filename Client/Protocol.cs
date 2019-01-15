@@ -13,18 +13,18 @@ namespace TorChatClient
             return "100|" + nickName;
         }
 
-        public string sendRecepientNameMsg(string recepientName)
+        public string sendRecepientNameMsg(string myName, string recepientName)
         {
-            return "102|" + recepientName;
+            return "102|" + myName + "|" + recepientName;
         }
 
         public string messageToBeSent(string msg, List<Tuple<string, Int32>> listOfAddresses)
         {
-            string msgToSend = "150|" + msg;
+            string msgToSend = "150|" + msg + "|";
 
             for(int i=0;i<listOfAddresses.Count; i++)
             {
-                msgToSend += listOfAddresses[i].ToString() + "|";
+                msgToSend += listOfAddresses[i].Item1.ToString() + "," + listOfAddresses[i].Item2.ToString() + "|";
             }
 
             return msgToSend;
