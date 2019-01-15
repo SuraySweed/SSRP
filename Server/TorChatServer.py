@@ -11,6 +11,9 @@ users_dictionary = {}
 connectToDB = sqlite3.connect(USERS_DB_NAME)
 cursor = connectToDB.cursor()
 
+sql_command = "DELETE FROM users;"
+cursor.execute(sql_command)
+
 def main():
 
 	listening_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -41,6 +44,7 @@ def main():
 					break
 		except:
 			print("Error")
+
 	Clean_DataBase_Users()
 	connectToDB.close()
 	connection.close()  
@@ -99,8 +103,8 @@ def update_IP_PORT_for_user(name, IP, PORT):
 
 	None
 	
-def clients_route_by_bulding_trace(name):
-	sql_command = "SELECT * from users where name != " + '"' + name + '"' + ';'
+def clients_route_by_bulding_trace(name, recpient_name):
+	sql_command = "SELECT * from users where name != " + '"' + name + '" and name != ' + '"' + recpient_name + '"' + ';'
 	clients_data = ""
 
 	cursor.execute(sql_command)
@@ -114,12 +118,6 @@ def clients_route_by_bulding_trace(name):
 		return 0
 	return clients_data
 
-def Clean_DataBase_Users():
-	sql_command = "DELETE FROM users;"
-	cursor.execute()
-	cursor.commit()
-
-	None
 
 def handle_recevied_name(msg, connection, client_address):
 	client_name = (msg.decode('utf-8').split("|"))[1]
@@ -146,10 +144,11 @@ def handle_forwarding_information_request(msg_from_client, connection, client_ad
 	
 	msg_to_client = "203|0" #false
 	#ip, port
-	name = ((msg_from_client.decode('utf-8')).split("|"))[1]
+	name = ((msg_from_client.decode('utf-8')).split("|"))[1] # request the trace 
 	other_side_client_name = ((msg_from_client.decode('utf-8')).split("|"))[2]
 	data = get_recepient_client_information(other_side_client_name)
-	route_trace = clients_route_by_bulding_trace(name)
+
+	route_trace = clients_route_by_bulding_trace(name, other_side_client_name)
 
 	#if(data != 0):
 		#if(data[1] != client_address[1]):
@@ -159,7 +158,7 @@ def handle_forwarding_information_request(msg_from_client, connection, client_ad
 			#msg_to_client = "203|1"
 			#
 	if(data and route_trace != 0):
-		msg_to_client = "203|" + route_trace;
+		msg_to_client = "203|" + data[0] + "," + str(data[1]) + "|" + route_trace;
 
 
 	print("sent: ", msg_to_client)
