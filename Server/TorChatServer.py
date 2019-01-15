@@ -4,7 +4,7 @@ import subprocess
 
 PORT = 8820
 USERS_DB_NAME = "Users.db"
-ServerIP = "127.0.0.1"
+ServerIP = "10.0.0.6"
 
 users_dictionary = {}
 
@@ -41,7 +41,7 @@ def main():
 					break
 		except:
 			print("Error")
-	
+	Clean_DataBase_Users()
 	connectToDB.close()
 	connection.close()  
 	listening_socket.close()
@@ -99,8 +99,8 @@ def update_IP_PORT_for_user(name, IP, PORT):
 
 	None
 	
-def clients_route_by_bulding_trace(port):
-	sql_command = "SELECT * from users where port != " + port + ';'
+def clients_route_by_bulding_trace(name):
+	sql_command = "SELECT * from users where name != " + '"' + name + '"' + ';'
 	clients_data = ""
 
 	cursor.execute(sql_command)
@@ -113,6 +113,13 @@ def clients_route_by_bulding_trace(port):
 	else:
 		return 0
 	return clients_data
+
+def Clean_DataBase_Users():
+	sql_command = "DELETE FROM users;"
+	cursor.execute()
+	cursor.commit()
+
+	None
 
 def handle_recevied_name(msg, connection, client_address):
 	client_name = (msg.decode('utf-8').split("|"))[1]
@@ -139,10 +146,10 @@ def handle_forwarding_information_request(msg_from_client, connection, client_ad
 	
 	msg_to_client = "203|0" #false
 	#ip, port
-	other_side_client_name = ((msg_from_client.decode('utf-8')).split("|"))[1]
-	
+	name = ((msg_from_client.decode('utf-8')).split("|"))[1]
+	other_side_client_name = ((msg_from_client.decode('utf-8')).split("|"))[2]
 	data = get_recepient_client_information(other_side_client_name)
-	route_trace = clients_route_by_bulding_trace(str(client_address[1]))
+	route_trace = clients_route_by_bulding_trace(name)
 
 	#if(data != 0):
 		#if(data[1] != client_address[1]):
@@ -171,6 +178,6 @@ def handle_msg_from_client(msg_code, msg_from_client, connection, client_address
 		handle_forwarding_information_request(msg_from_client, connection, client_address)
 	
 	None
-	
-	
+
+
 main()
