@@ -38,17 +38,21 @@
             this.getNameButton = new System.Windows.Forms.Button();
             this.otherName = new System.Windows.Forms.Label();
             this.disconnectButton = new System.Windows.Forms.Button();
+            this.refreshButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // ChatText
             // 
+            this.ChatText.BackColor = System.Drawing.SystemColors.ControlText;
             this.ChatText.Font = new System.Drawing.Font("Miriam Fixed", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ChatText.ForeColor = System.Drawing.Color.White;
             this.ChatText.Location = new System.Drawing.Point(24, 21);
             this.ChatText.Name = "ChatText";
             this.ChatText.ReadOnly = true;
             this.ChatText.Size = new System.Drawing.Size(410, 256);
             this.ChatText.TabIndex = 0;
             this.ChatText.Text = "";
+            this.ChatText.TextChanged += new System.EventHandler(this.ChatText_TextChanged);
             // 
             // messageToSendBox
             // 
@@ -143,11 +147,23 @@
             this.disconnectButton.Visible = false;
             this.disconnectButton.Click += new System.EventHandler(this.disconnectButton_Click);
             // 
+            // refreshButton
+            // 
+            this.refreshButton.Font = new System.Drawing.Font("Miriam Fixed", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.refreshButton.Location = new System.Drawing.Point(359, 12);
+            this.refreshButton.Name = "refreshButton";
+            this.refreshButton.Size = new System.Drawing.Size(75, 23);
+            this.refreshButton.TabIndex = 10;
+            this.refreshButton.Text = "Refresh Chat";
+            this.refreshButton.UseVisualStyleBackColor = true;
+            this.refreshButton.Click += new System.EventHandler(this.refreshButton_Click);
+            // 
             // ChatForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(625, 471);
+            this.Controls.Add(this.refreshButton);
             this.Controls.Add(this.disconnectButton);
             this.Controls.Add(this.otherName);
             this.Controls.Add(this.getNameButton);
@@ -178,5 +194,6 @@
         private System.Windows.Forms.Button getNameButton;
         private System.Windows.Forms.Label otherName;
         private System.Windows.Forms.Button disconnectButton;
+        private System.Windows.Forms.Button refreshButton;
     }
 }

@@ -21,6 +21,7 @@ namespace TorChatClient
         bool threadCondition = true;
         private string _mainName;
         private List<Tuple<string, Int32>> _currentRoute;
+        public string goesRightToChat;
 
         TorChater _torChater = new TorChater();
         TorChater.ClientServerSocket _serverConnect = new TorChater.ClientServerSocket();
@@ -123,7 +124,9 @@ namespace TorChatClient
                 {
                     data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
 
-                    handleMessagesFromOtherClients(data);
+                    string stuff = handleMessagesFromOtherClients(data);
+
+                    //ChatText.Text += stuff;
 
                     data = data.ToUpper();
 
@@ -182,14 +185,16 @@ namespace TorChatClient
 
                 string msgToSend = null;
 
-                if (splitedMSG.Length == 3)
-                    msgToSend = "151";
+                if (splitedMSG.Length == 4)
+                    msgToSend = "151|";
                 else
-                    msgToSend = "150";
+                    msgToSend = "150|";
 
-                for (int i = 1; i < splitedMSG.Length - 1; i++) 
+                goesRightToChat = null;
+
+                for (int i = 1; i < splitedMSG.Length - 2; i++) 
                 {
-                    msgToSend += splitedMSG[i];
+                    msgToSend += splitedMSG[i] + "|";
                 }
 
                 if (_serverConnect.connection(recepientIP, recepientPORT))
@@ -201,15 +206,27 @@ namespace TorChatClient
                 {
                     MessageBox.Show("NO CONNECTION WITH OTHER CLIENT!!!");
                 }
-                return 0;
+                return null;
             }
             else if(splitedMSG[0] == "151")// got a message
             {
-                ChatText.Text += splitedMSG[1];
-                ChatText.Text += "\n";
-                return null;
+                goesRightToChat += splitedMSG[1];
+                goesRightToChat += "\n";
+                
+
+                return goesRightToChat;
             }
-            return 0;
+            return null;
+        }
+
+        private void ChatText_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void refreshButton_Click(object sender, EventArgs e)
+        {
+            ChatText.Text += goesRightToChat;
         }
     }
 }

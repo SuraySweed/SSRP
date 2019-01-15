@@ -20,11 +20,21 @@ namespace TorChatClient
 
         public string messageToBeSent(string msg, List<Tuple<string, Int32>> listOfAddresses)
         {
-            string msgToSend = "150|" + msg + "|";
+            string msgToSend = null;
 
-            for(int i=0;i<listOfAddresses.Count; i++)
+            if(listOfAddresses.Count == 0)
             {
-                msgToSend += listOfAddresses[i].Item1.ToString() + "," + listOfAddresses[i].Item2.ToString() + "|";
+                msgToSend = "151|" + msg;
+            }
+            else
+            {
+                msgToSend = "150|" + msg + "|";
+
+                for (int i = 0; i < listOfAddresses.Count; i++)
+                {
+                    msgToSend += listOfAddresses[i].Item1.ToString() + "," + listOfAddresses[i].Item2.ToString() + "|";
+                }
+
             }
 
             return msgToSend;
