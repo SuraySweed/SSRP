@@ -96,35 +96,7 @@ namespace TorChatClient
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            //Byte[] bytes = new Byte[256];
-            //String data = null;
-
-            //Console.Write("Waiting for a connection... ");
-
-            //TcpClient client = meListening.AcceptTcpClient();
-            //Console.WriteLine("Connected!");
-
-            //data = null;
-
-            //NetworkStream stream = client.GetStream();
-
-            //int i;
-
-            //while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
-            //{
-            //    data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
-            //    //Console.WriteLine("Received: {0}", data);
-
-
-            //    data = data.ToUpper();
-
-            //    byte[] msg = System.Text.Encoding.ASCII.GetBytes(data);
-
-            //    //// Send back a response.
-            //    //stream.Write(msg, 0, msg.Length);
-            //    //Console.WriteLine("Sent: {0}", data);
-            //}
-
+            
         }
 
         public class ClientServerSocket

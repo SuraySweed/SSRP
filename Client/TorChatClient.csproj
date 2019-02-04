@@ -51,6 +51,16 @@
     <Compile Include="ChatForm.Designer.cs">
       <DependentUpon>ChatForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Connection.cs" />
+    <Compile Include="Listener.cs" />
+    <Compile Include="MessageFactory.cs" />
+    <Compile Include="Msg.cs" />
+    <Compile Include="Msg100.cs" />
+    <Compile Include="Msg102.cs" />
+    <Compile Include="Msg150.cs" />
+    <Compile Include="Msg151.cs" />
+    <Compile Include="Msg201.cs" />
+    <Compile Include="Msg203.cs" />
     <Compile Include="Protocol.cs" />
     <Compile Include="TorChater.cs">
       <SubType>Form</SubType>
