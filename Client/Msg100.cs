@@ -14,6 +14,7 @@ namespace TorChatClient
         {
             _data = null;
             _nickName = nickName;
+            _messageCode = 100;
         }
 
         public override string  BuildMessageInString()

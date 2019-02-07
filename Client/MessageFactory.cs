@@ -22,7 +22,7 @@ namespace TorChatClient
             return msg102;
         }
 
-        public Msg messageToBeSent(string msg, List<Tuple<string, Int32>> listOfAddresses)
+        public Msg PeersMessages(string msg, List<Tuple<string, Int32>> listOfAddresses)
         {
             Msg msgToSend = null;
 
@@ -72,9 +72,26 @@ namespace TorChatClient
                 }
                 return msg203;
             }
-            else if (splitedMSG[0] == "205")
+            else if (splitedMSG[0] == "150") // forward
             {
-                return null;
+                List<Tuple<string, Int32>> addressesList = new List<Tuple<string, int>>();
+                List<string> theMsg = new List<string>(splitedMSG);
+
+                foreach (string add in theMsg.GetRange(2, theMsg.Count - 2))
+                {
+                    string[] IPPORT = add.Split(',');
+                    addressesList.Add(new Tuple<string, Int32>(IPPORT[0], Int32.Parse(IPPORT[1])));
+                }
+
+                Msg msg150 = new Msg150(splitedMSG[1], addressesList);
+
+                return msg150;
+            }
+            else if (splitedMSG[0] == "151")// got a message
+            {
+                Msg msg151 = new Msg151(splitedMSG[1]);
+                
+                return msg151;
             }
             else
             {

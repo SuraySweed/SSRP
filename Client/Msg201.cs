@@ -11,12 +11,17 @@ namespace TorChatClient
     {
         Int32 _port;
         IPAddress _ip;
-
+        
         public Msg201(Int32 port, IPAddress iPAddress, string data)
         {
             _port = port;
             _ip = iPAddress;
             _data = data;
+            _messageCode = 201;
         }
+
+        public new Int32 Port => _port;
+
+        public new IPAddress IP => _ip;
     }
 }

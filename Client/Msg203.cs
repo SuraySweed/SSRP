@@ -14,6 +14,12 @@ namespace TorChatClient
         {
             _data = null;
             _route = route;
+            _messageCode = 203;
+        }
+
+        public List<Tuple<string, Int32>> GetRoute()
+        {
+            return _route;
         }
     }
 }

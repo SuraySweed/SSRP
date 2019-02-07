@@ -16,7 +16,7 @@ namespace TorChatClient
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new TorChater());
+            Application.Run(new ConnectToTorChat());
         }
     }
 }

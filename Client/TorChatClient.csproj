@@ -45,13 +45,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ChatForm.cs">
+    <Compile Include="ChatGUI.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ChatForm.Designer.cs">
-      <DependentUpon>ChatForm.cs</DependentUpon>
+    <Compile Include="ChatGUI.Designer.cs">
+      <DependentUpon>ChatGUI.cs</DependentUpon>
     </Compile>
-    <Compile Include="Connection.cs" />
+    <Compile Include="TCPConnection.cs" />
     <Compile Include="Listener.cs" />
     <Compile Include="MessageFactory.cs" />
     <Compile Include="Msg.cs" />
@@ -61,20 +61,21 @@
     <Compile Include="Msg151.cs" />
     <Compile Include="Msg201.cs" />
     <Compile Include="Msg203.cs" />
+    <Compile Include="PortAndIPOfServer.cs" />
     <Compile Include="Protocol.cs" />
-    <Compile Include="TorChater.cs">
+    <Compile Include="ConnectToTorChat.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TorChater.Designer.cs">
-      <DependentUpon>TorChater.cs</DependentUpon>
+    <Compile Include="ConnectToTorChat.Designer.cs">
+      <DependentUpon>ConnectToTorChat.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="ChatForm.resx">
-      <DependentUpon>ChatForm.cs</DependentUpon>
+    <EmbeddedResource Include="ChatGUI.resx">
+      <DependentUpon>ChatGUI.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TorChater.resx">
-      <DependentUpon>TorChater.cs</DependentUpon>
+    <EmbeddedResource Include="ConnectToTorChat.resx">
+      <DependentUpon>ConnectToTorChat.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

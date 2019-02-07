@@ -2,7 +2,6 @@ C:\Users\magshimim\Desktop\HomeWorks\3rd YEAR\Project files\TorChatClient\TorCha
 C:\Users\magshimim\Desktop\HomeWorks\3rd YEAR\Project files\TorChatClient\TorChatClient\bin\Debug\TorChatClient.exe
 C:\Users\magshimim\Desktop\HomeWorks\3rd YEAR\Project files\TorChatClient\TorChatClient\bin\Debug\TorChatClient.pdb
 C:\Users\magshimim\Desktop\HomeWorks\3rd YEAR\Project files\TorChatClient\TorChatClient\obj\Debug\TorChatClient.csprojResolveAssemblyReference.cache
-C:\Users\magshimim\Desktop\HomeWorks\3rd YEAR\Project files\TorChatClient\TorChatClient\obj\Debug\TorChatClient.TorChater.resources
 C:\Users\magshimim\Desktop\HomeWorks\3rd YEAR\Project files\TorChatClient\TorChatClient\obj\Debug\TorChatClient.Properties.Resources.resources
 C:\Users\magshimim\Desktop\HomeWorks\3rd YEAR\Project files\TorChatClient\TorChatClient\obj\Debug\TorChatClient.csproj.GenerateResource.Cache
 C:\Users\magshimim\Desktop\HomeWorks\3rd YEAR\Project files\TorChatClient\TorChatClient\obj\Debug\TorChatClient.csproj.CoreCompileInputs.cache
@@ -18,4 +17,5 @@ C:\Users\magshimim\Desktop\SSRP_Project\TorChatClient\TorChatClient\obj\Debug\To
 C:\Users\magshimim\Desktop\SSRP_Project\TorChatClient\TorChatClient\obj\Debug\TorChatClient.csproj.CoreCompileInputs.cache
 C:\Users\magshimim\Desktop\SSRP_Project\TorChatClient\TorChatClient\obj\Debug\TorChatClient.exe
 C:\Users\magshimim\Desktop\SSRP_Project\TorChatClient\TorChatClient\obj\Debug\TorChatClient.pdb
-C:\Users\magshimim\Desktop\HomeWorks\3rd YEAR\Project files\TorChatClient\TorChatClient\obj\Debug\TorChatClient.ChatForm.resources
+C:\Users\magshimim\Desktop\HomeWorks\3rd YEAR\Project files\TorChatClient\TorChatClient\obj\Debug\TorChatClient.ConnectToTorChat.resources
+C:\Users\magshimim\Desktop\HomeWorks\3rd YEAR\Project files\TorChatClient\TorChatClient\obj\Debug\TorChatClient.ChatGUI.resources

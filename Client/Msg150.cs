@@ -14,6 +14,7 @@ namespace TorChatClient
         {
             _data = data;
             _listOfAddresses = listOfAddresses;
+            _messageCode = 150;
         }
 
         public List<Tuple<string, Int32>> getNextRoute()
@@ -28,9 +29,14 @@ namespace TorChatClient
             return _listOfAddresses;
         }
 
+        public Tuple<string, Int32> getNextAdrressToSendTo()
+        {
+            return _listOfAddresses[_listOfAddresses.Count - 1];
+        }
+
         public override string BuildMessageInString()
         {
-            string msgToSend = "150";
+            string msgToSend = "150|" + _data;
 
             for (int i = 0; i < _listOfAddresses.Count; i++)
             {

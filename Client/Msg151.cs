@@ -12,6 +12,7 @@ namespace TorChatClient
         public Msg151(string data)
         {
             _data = data;
+            _messageCode = 151;
         }
 
         public override string BuildMessageInString()

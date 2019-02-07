@@ -4,7 +4,7 @@ import subprocess
 
 PORT = 8820
 USERS_DB_NAME = "Users.db"
-ServerIP = "10.0.0.6"
+ServerIP = "127.0.0.1"
 
 users_dictionary = {}
 
@@ -157,8 +157,8 @@ def handle_forwarding_information_request(msg_from_client, connection, client_ad
 		#elif(data[1] == client_address[1]):
 			#msg_to_client = "203|1"
 			#
-	if(data and route_trace != 0):
-		msg_to_client = "203|" + data[0] + "," + str(data[1]) + "|" + route_trace;
+	if(data or route_trace != 0):
+		msg_to_client = "203|" + data[0] + "," + str(data[1]) + "|" + str(route_trace);
 
 
 	print("sent: ", msg_to_client)
