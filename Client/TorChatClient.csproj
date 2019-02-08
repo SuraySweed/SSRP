@@ -51,6 +51,7 @@
     <Compile Include="ChatGUI.Designer.cs">
       <DependentUpon>ChatGUI.cs</DependentUpon>
     </Compile>
+    <Compile Include="RSA.cs" />
     <Compile Include="TCPConnection.cs" />
     <Compile Include="Listener.cs" />
     <Compile Include="MessageFactory.cs" />
@@ -62,7 +63,6 @@
     <Compile Include="Msg201.cs" />
     <Compile Include="Msg203.cs" />
     <Compile Include="PortAndIPOfServer.cs" />
-    <Compile Include="Protocol.cs" />
     <Compile Include="ConnectToTorChat.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -86,6 +86,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="ClassDiagram1.cd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

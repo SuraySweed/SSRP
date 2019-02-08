@@ -58,11 +58,24 @@ namespace TorChatClient
                     if(msgRecieved.getMessageCode() == 150)
                     {
                         Msg150 msg150 = (Msg150)msgRecieved;
+                        Msg msgToSend = messageFactory.PeersMessages(msg150.getData(), msg150.getNextRoute());
+
                         if (_TCPConnection.establishConnection(msg150.getNextAdrressToSendTo().Item1, msg150.getNextAdrressToSendTo().Item2))
                         {
-                            Msg150 msgToForward = new Msg150(msg150.getData(), msg150.getNextRoute());
-                            _TCPConnection.SendData(msgToForward.BuildMessageInString());
-                            _TCPConnection.disconnect();
+                            if (msgToSend.getMessageCode() == 150)
+                            {
+                                Msg150 msgToForward = (Msg150)msgToSend;
+                                _TCPConnection.SendData(msgToForward.BuildMessageInString());
+                                _TCPConnection.disconnect();
+                            }
+                            else
+                            {
+                                Msg151 msgToForward = (Msg151)msgToSend;
+                                _TCPConnection.SendData(msgToForward.BuildMessageInString());
+                                _TCPConnection.disconnect();
+
+                            }
+                            MessageBox.Show("netov tam besalam :)");
                         }
                         else
                         {
@@ -88,6 +101,13 @@ namespace TorChatClient
         {
             _tcpListener.Stop();
         }
-        
+
+        internal MessageFactory MessageFactory
+        {
+            get => default(MessageFactory);
+            set
+            {
+            }
+        }
     }
 }

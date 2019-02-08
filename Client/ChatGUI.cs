@@ -101,43 +101,7 @@ namespace TorChatClient
 
 
         }
-
-        //private void startListening()
-        //{
-        //    while (threadCondition)
-        //    {
-        //        Byte[] bytes = new Byte[256];
-        //        String data = null;
-
-        //        Console.Write("Waiting for a connection... ");
-
-        //        TcpClient client = _ConnectToTorChatForm.meListening.AcceptTcpClient();
-        //        Console.WriteLine("Connected!");
-
-        //        data = null;
-
-        //        NetworkStream stream = client.GetStream();
-
-        //        int i;
-
-        //        while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
-        //        {
-        //            data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
-
-        //            string stuff = handleMessagesFromOtherClients(data);
-
-        //            //ChatText.Text += stuff;
-
-        //            data = data.ToUpper();
-
-        //            byte[] msg = System.Text.Encoding.ASCII.GetBytes(data);
-
-        //            if (!threadCondition)
-        //                break;
-        //        }
-        //    }
-        //}
-
+        
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
             if (messageToSendBox.Text != "" && disconnectButton.Visible == true)
@@ -174,50 +138,6 @@ namespace TorChatClient
             disconnectButton.Hide();
 
         }
-
-        //private dynamic handleMessagesFromOtherClients(string message)
-        //{
-        //    string[] splitedMSG = message.Split('|');
-        //    if(splitedMSG[0] == "150") // forward
-        //    {
-        //        recepientPORT = Int32.Parse(splitedMSG[splitedMSG.Length - 2].Split(',')[1]);
-        //        recepientIP = splitedMSG[splitedMSG.Length - 2].Split(',')[0];
-
-        //        string msgToSend = null;
-
-        //        if (splitedMSG.Length == 4)
-        //            msgToSend = "151|";
-        //        else
-        //            msgToSend = "150|";
-
-        //        goesRightToChat = null;
-
-        //        for (int i = 1; i < splitedMSG.Length - 2; i++) 
-        //        {
-        //            msgToSend += splitedMSG[i] + "|";
-        //        }
-
-        //        if (_connection.connection(recepientIP, recepientPORT))
-        //        {
-        //            _connection.SendToServer(msgToSend);
-        //            _connection.disconnect();
-        //        }
-        //        else
-        //        {
-        //            MessageBox.Show("NO CONNECTION WITH OTHER CLIENT!!!");
-        //        }
-        //        return null;
-        //    }
-        //    else if(splitedMSG[0] == "151")// got a message
-        //    {
-        //        goesRightToChat += splitedMSG[1];
-        //        goesRightToChat += "\n";
-                
-
-        //        return goesRightToChat;
-        //    }
-        //    return null;
-        //}
 
         private void ChatText_TextChanged(object sender, EventArgs e)
         {

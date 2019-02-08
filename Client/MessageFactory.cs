@@ -9,6 +9,13 @@ namespace TorChatClient
 {
     class MessageFactory
     {
+        public Msg Msg
+        {
+            get => default(Msg);
+            set
+            {
+            }
+        }
 
         public Msg connectToServerMsg(string nickName)
         {

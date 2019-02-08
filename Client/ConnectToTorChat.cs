@@ -19,11 +19,33 @@ namespace TorChatClient
         public Listener meListening = null;
         private MessageFactory _MessageFactory = new MessageFactory();
         
-        public Protocol protocol = new Protocol();
-        
         public ConnectToTorChat()
         {
             InitializeComponent();
+        }
+
+        public ChatGUI ChatGUI
+        {
+            get => default(ChatGUI);
+            set
+            {
+            }
+        }
+
+        public PortAndIPOfServer PortAndIPOfServer
+        {
+            get => default(PortAndIPOfServer);
+            set
+            {
+            }
+        }
+
+        public Listener Listener
+        {
+            get => default(Listener);
+            set
+            {
+            }
         }
 
         private void TorChater_Load(object sender, EventArgs e)

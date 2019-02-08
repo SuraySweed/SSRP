@@ -14,6 +14,14 @@ namespace TorChatClient
         private TcpClient _client;
         private NetworkStream _clientStream;
 
+        public ConnectToTorChat ConnectToTorChat
+        {
+            get => default(ConnectToTorChat);
+            set
+            {
+            }
+        }
+
         public TcpClient getClient()
         {
             return _client;

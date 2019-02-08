@@ -19,7 +19,7 @@ namespace TorChatClient
 
         public List<Tuple<string, Int32>> getNextRoute()
         {
-            List<Tuple<string, Int32>> newList = _listOfAddresses;
+            List<Tuple<string, Int32>> newList = new List<Tuple<string, Int32>>(_listOfAddresses);
             newList.RemoveAt(newList.Count - 1);
             return newList;
         }

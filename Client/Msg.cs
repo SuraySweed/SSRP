@@ -11,6 +11,14 @@ namespace TorChatClient
         protected string _data;
         protected int _messageCode;
 
+        internal RSA RSA
+        {
+            get => default(RSA);
+            set
+            {
+            }
+        }
+
         public virtual string BuildMessageInString() { return null; }
         public string getData() { return _data; }
         public int getMessageCode() { return _messageCode; }
