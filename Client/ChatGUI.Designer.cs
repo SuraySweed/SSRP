@@ -76,6 +76,7 @@
             // 
             // sendMessageButton
             // 
+            this.sendMessageButton.Enabled = false;
             this.sendMessageButton.Font = new System.Drawing.Font("Miriam Fixed", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.sendMessageButton.Location = new System.Drawing.Point(24, 349);
             this.sendMessageButton.Name = "sendMessageButton";

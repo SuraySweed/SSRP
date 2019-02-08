@@ -120,6 +120,9 @@ namespace TorChatClient
             {
                 _connection.SendData(messageFactory.PeersMessages((_mainName + ": " + messageToSendBox.Text), _currentRoute).BuildMessageInString());
                 _connection.disconnect();
+
+                ChatText.Text += "me: " + messageToSendBox.Text;
+                ChatText.Text += "\n";
             }
             else
             {
