@@ -19,10 +19,16 @@ namespace TorChatClient
         private MessageFactory messageFactory = new MessageFactory();
         private TCPConnection _TCPConnection = new TCPConnection();
         private string _savedData = null;
+        private bool _dataChanged = false;
         public string SavedData
         {
             get { return _savedData; }
             set { _savedData = value; }
+        }
+        public bool DataChanged
+        {
+            get { return _dataChanged; }
+            set { _dataChanged = value; }
         }
 
         public Listener(IPAddress ip, Int32 port)
@@ -75,7 +81,7 @@ namespace TorChatClient
                                 _TCPConnection.disconnect();
 
                             }
-                            MessageBox.Show("netov tam besalam :)");
+                            //MessageBox.Show("netov tam besalam :)");
                         }
                         else
                         {
@@ -85,8 +91,9 @@ namespace TorChatClient
                     else if(msgRecieved.getMessageCode() == 151)
                     {
                         Msg151 msg151 = (Msg151)msgRecieved;
-                        MessageBox.Show(msg151.getData());
+                        //MessageBox.Show(msg151.getData());
                         SavedData = msg151.getData();
+                        DataChanged = true;
                     }
 
                     if (!ListiningCondition)

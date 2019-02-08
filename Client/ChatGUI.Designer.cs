@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.ChatText = new System.Windows.Forms.RichTextBox();
             this.messageToSendBox = new System.Windows.Forms.TextBox();
             this.HelppingText = new System.Windows.Forms.Label();
@@ -38,7 +39,7 @@
             this.getNameButton = new System.Windows.Forms.Button();
             this.otherName = new System.Windows.Forms.Label();
             this.disconnectButton = new System.Windows.Forms.Button();
-            this.refreshButton = new System.Windows.Forms.Button();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // ChatText
@@ -147,23 +148,17 @@
             this.disconnectButton.Visible = false;
             this.disconnectButton.Click += new System.EventHandler(this.disconnectButton_Click);
             // 
-            // refreshButton
+            // timer1
             // 
-            this.refreshButton.Font = new System.Drawing.Font("Miriam Fixed", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.refreshButton.Location = new System.Drawing.Point(359, 12);
-            this.refreshButton.Name = "refreshButton";
-            this.refreshButton.Size = new System.Drawing.Size(75, 23);
-            this.refreshButton.TabIndex = 10;
-            this.refreshButton.Text = "Refresh Chat";
-            this.refreshButton.UseVisualStyleBackColor = true;
-            this.refreshButton.Click += new System.EventHandler(this.refreshButton_Click);
+            this.timer1.Enabled = true;
+            this.timer1.Interval = 1000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // ChatGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(625, 471);
-            this.Controls.Add(this.refreshButton);
             this.Controls.Add(this.disconnectButton);
             this.Controls.Add(this.otherName);
             this.Controls.Add(this.getNameButton);
@@ -194,6 +189,6 @@
         private System.Windows.Forms.Button getNameButton;
         private System.Windows.Forms.Label otherName;
         private System.Windows.Forms.Button disconnectButton;
-        private System.Windows.Forms.Button refreshButton;
+        private System.Windows.Forms.Timer timer1;
     }
 }

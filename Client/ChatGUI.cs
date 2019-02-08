@@ -118,7 +118,7 @@ namespace TorChatClient
         {
             if (_connection.establishConnection(recepientIP, recepientPORT))
             {
-                _connection.SendData(messageFactory.PeersMessages(messageToSendBox.Text, _currentRoute).BuildMessageInString());
+                _connection.SendData(messageFactory.PeersMessages((_mainName + ": " + messageToSendBox.Text), _currentRoute).BuildMessageInString());
                 _connection.disconnect();
             }
             else
@@ -146,9 +146,20 @@ namespace TorChatClient
 
         private void refreshButton_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("he says" + _ConnectToTorChatForm.meListening.SavedData);
+            //MessageBox.Show("he says" + _ConnectToTorChatForm.meListening.SavedData);
             ChatText.Text += _ConnectToTorChatForm.meListening.SavedData;
             ChatText.Text += "\n";
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            if (_ConnectToTorChatForm.meListening.DataChanged)
+            {
+                ChatText.Text += _ConnectToTorChatForm.meListening.SavedData;
+                ChatText.Text += "\n";
+
+                _ConnectToTorChatForm.meListening.DataChanged = false;
+            }
         }
     }
 }
