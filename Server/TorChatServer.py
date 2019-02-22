@@ -4,7 +4,7 @@ import subprocess
 
 PORT = 8820
 USERS_DB_NAME = "Users.db"
-ServerIP = "127.0.0.1"
+ServerIP = "10.40.178.162"
 
 users_dictionary = {}
 
@@ -65,8 +65,8 @@ def get_msg_code(msg_from_client):
 	return msg_from_client[0:3]
 		 
 		 
-def Insert_User_To_DB(name, IP, PORT):
-	insert_user_to_db_sql_command = "INSERT INTO Users(name, IP, PORT)" +  " VALUES (" + "'" + name + "'" + ", '" + IP + "'" + " ,'" + PORT + "'" +");"
+def Insert_User_To_DB(name, IP, PORT, public_key):
+	insert_user_to_db_sql_command = "INSERT INTO Users(name, IP, PORT, publicKey)" +  " VALUES (""'" + name + "'" + ", '" + IP + "'" + " ,'" + PORT + "', " + "'" + public_key + "'"");"
 	cursor.execute(insert_user_to_db_sql_command)
 	
 	connectToDB.commit()
@@ -79,7 +79,7 @@ def get_recepient_client_information(name):
 	result = cursor.fetchall() #[()()()()] list of tuples
 	
 	if(result):
-		return (result[0][2], result[0][3])
+		return (result[0][2], result[0][3], result[0][4])
 	
 	else:
 		return 0	
@@ -96,8 +96,8 @@ def is_User_In_The_DB(name):
 	else:
 		return False
 
-def update_IP_PORT_for_user(name, IP, PORT):
-	sql_command = "UPDATE users SET IP = " + "'" + IP + "'" + ", PORT = " + "'" + PORT + "'" + " WHERE name = " + "'" + name + "';" 
+def update_IP_PORT_for_user(name, IP, PORT, public_key):
+	sql_command = "UPDATE users SET IP = " + "'" + IP + "'" + ", PORT = " + "'" + PORT + "', '" + public_key + "'" + " WHERE name = " + "'" + name + "';" 
 	cursor.execute(sql_command)
 	connectToDB.commit()
 
@@ -113,7 +113,7 @@ def clients_route_by_bulding_trace(name, recpient_name):
 
 	if result:
 		for item in result:
-			clients_data = clients_data + item[2] + "," + str(item[3]) + "|"
+			clients_data = clients_data + item[2] + "," + str(item[3]) + "," + str(item[4]) + "|"
 	else:
 		return 0
 	return clients_data
@@ -121,6 +121,7 @@ def clients_route_by_bulding_trace(name, recpient_name):
 
 def handle_recevied_name(msg, connection, client_address):
 	client_name = (msg.decode('utf-8').split("|"))[1]
+	public_key = (msg.decode('utf-8').split("|"))[2]
 	check = is_User_In_The_DB(client_name)
 
 	if check:
@@ -129,7 +130,7 @@ def handle_recevied_name(msg, connection, client_address):
 		print("-----------------------")
 
 	else:
-		Insert_User_To_DB(client_name, client_address[0], str(client_address[1]))
+		Insert_User_To_DB(client_name, client_address[0], str(client_address[1]), public_key)
 		print("Inserted To the DATABASE")
 		print("-----------------------")
 	
@@ -158,7 +159,7 @@ def handle_forwarding_information_request(msg_from_client, connection, client_ad
 			#msg_to_client = "203|1"
 			#
 	if(data or route_trace != 0):
-		msg_to_client = "203|" + data[0] + "," + str(data[1]) + "|" + str(route_trace);
+		msg_to_client = "203|" + data[0] + "," + str(data[1]) + "," + data[2] + "|" + str(route_trace);
 
 
 	print("sent: ", msg_to_client)
@@ -175,6 +176,7 @@ def handle_msg_from_client(msg_code, msg_from_client, connection, client_address
 	
 	elif(msg_code == b'102'):
 		handle_forwarding_information_request(msg_from_client, connection, client_address)
+
 	
 	None
 
