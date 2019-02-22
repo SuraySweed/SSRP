@@ -9,6 +9,13 @@ namespace TorChatClient
 {
     class MessageFactory
     {
+        RSA _encryptionHelper = null;
+
+        public MessageFactory(RSA rsa)
+        {
+            _encryptionHelper = rsa;
+        }
+
         public Msg Msg
         {
             get => default(Msg);
@@ -19,7 +26,7 @@ namespace TorChatClient
 
         public Msg connectToServerMsg(string nickName)
         {
-            Msg msg100 = new Msg100(nickName);
+            Msg msg100 = new Msg100(nickName, _encryptionHelper.getPublicKeyInString());
             return msg100;
         }
 
@@ -57,7 +64,7 @@ namespace TorChatClient
 
                 return msg201;
             }
-            else if (splitedMSG[0] == "203") // getting the route to the other dude
+            else if (splitedMSG[0] == "203") // getting the route to the other dude ***and the keys***
             {
                 Msg msg203;
                 if (splitedMSG.Length == 2)
@@ -67,15 +74,19 @@ namespace TorChatClient
                 else
                 {
                     List<Tuple<string, Int32>> recvMsg = new List<Tuple<string, Int32>>();
+                    List<string> keysList = new List<string>();
 
                     for (int i = 1; i < splitedMSG.Length - 1; i++)
                     {
-                        Tuple<string, Int32> tuple = new Tuple<string, int>(splitedMSG[i].Split(',')[0], Int32.Parse(splitedMSG[i].Split(',')[1]));
+                        string[] innerInfo = splitedMSG[i].Split(',');
 
+                        Tuple<string, Int32> tuple = new Tuple<string, int>(innerInfo[0], Int32.Parse(innerInfo[1]));
+
+                        keysList.Add(innerInfo[2]);
                         recvMsg.Add(tuple);
                     }
 
-                    msg203 = new Msg203(recvMsg);
+                    msg203 = new Msg203(recvMsg, keysList);
                 }
                 return msg203;
             }

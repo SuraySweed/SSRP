@@ -16,7 +16,7 @@ namespace TorChatClient
         private Int32 _port;
         private IPAddress _ip;
         private bool ListiningCondition { get; set; }
-        private MessageFactory messageFactory = new MessageFactory();
+        private MessageFactory messageFactory = new MessageFactory(null);
         private TCPConnection _TCPConnection = new TCPConnection();
         private string _savedData = null;
         private bool _dataChanged = false;
@@ -31,6 +31,7 @@ namespace TorChatClient
             set { _dataChanged = value; }
         }
 
+        
         public Listener(IPAddress ip, Int32 port)
         {
             _ip = ip;

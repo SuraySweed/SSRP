@@ -17,7 +17,8 @@ namespace TorChatClient
         public PortAndIPOfServer _PortAndIPOfServer = new PortAndIPOfServer();
         public TCPConnection _connection = new TCPConnection();
         public Listener meListening = null;
-        private MessageFactory _MessageFactory = new MessageFactory();
+        private MessageFactory _MessageFactory = null;
+        public RSA _rsa = new RSA();
         
         public ConnectToTorChat()
         {
@@ -50,7 +51,7 @@ namespace TorChatClient
 
         private void TorChater_Load(object sender, EventArgs e)
         {
-
+            _MessageFactory = new MessageFactory(_rsa);
 
         }
 

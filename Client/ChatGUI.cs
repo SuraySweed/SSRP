@@ -22,10 +22,10 @@ namespace TorChatClient
         private List<Tuple<string, Int32>> _currentRoute;
         public string goesRightToChat;
 
-        ConnectToTorChat _ConnectToTorChatForm = new ConnectToTorChat();
+        ConnectToTorChat _ConnectToTorChatForm;
         TCPConnection _connection = new TCPConnection();
         Thread thread;
-        MessageFactory messageFactory = new MessageFactory();
+        MessageFactory messageFactory = new MessageFactory(new RSA());
 
 
         public ChatGUI(ref ConnectToTorChat CTTC, string mainName)
@@ -77,6 +77,12 @@ namespace TorChatClient
                 }
                 else
                 {
+                    // TODO: need to collect the keys from the message
+                    /**********************************************/
+                    /**********************************************/
+                    /**********************************************/
+                    /**********************************************/
+
                     Msg203 msg203 = (Msg203)rcvdMsg;
                     _currentRoute = msg203.GetRoute();
 
@@ -118,6 +124,9 @@ namespace TorChatClient
         {
             if (_connection.establishConnection(recepientIP, recepientPORT))
             {
+                //string dataToSend = messageFactory.PeersMessages((_mainName + ": " + messageToSendBox.Text), _currentRoute).BuildMessageInString();
+                //_rsaEncryption.Encrypt(Encoding.UTF8.GetBytes(dataToSend));
+
                 _connection.SendData(messageFactory.PeersMessages((_mainName + ": " + messageToSendBox.Text), _currentRoute).BuildMessageInString());
                 _connection.disconnect();
 

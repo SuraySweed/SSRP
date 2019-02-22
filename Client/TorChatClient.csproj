@@ -51,6 +51,7 @@
     <Compile Include="ChatGUI.Designer.cs">
       <DependentUpon>ChatGUI.cs</DependentUpon>
     </Compile>
+    <Compile Include="RoutingController.cs" />
     <Compile Include="RSA.cs" />
     <Compile Include="TCPConnection.cs" />
     <Compile Include="Listener.cs" />

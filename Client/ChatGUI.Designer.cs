@@ -119,7 +119,7 @@
             // 
             this.getNameButton.Enabled = false;
             this.getNameButton.Font = new System.Drawing.Font("Miriam Fixed", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.getNameButton.Location = new System.Drawing.Point(489, 114);
+            this.getNameButton.Location = new System.Drawing.Point(474, 114);
             this.getNameButton.Name = "getNameButton";
             this.getNameButton.Size = new System.Drawing.Size(75, 23);
             this.getNameButton.TabIndex = 7;
