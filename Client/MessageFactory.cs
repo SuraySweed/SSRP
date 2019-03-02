@@ -98,7 +98,7 @@ namespace TorChatClient
 
                 for (int i = 0; i < bytes.Length / 256; i++) 
                 {
-                    encryptedListToDycrypt.Add(bytes.Skip(32 * i).Take(32).ToArray());
+                    encryptedListToDycrypt.Add(bytes.Skip(256 * i).Take(256).ToArray());
                 }
                 for (int i = 0; i < encryptedListToDycrypt.Count; i++)
                 {

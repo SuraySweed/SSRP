@@ -26,13 +26,14 @@ namespace TorChatClient
         ConnectToTorChat _ConnectToTorChatForm;
         TCPConnection _connection = new TCPConnection();
         Thread thread;
-        MessageFactory messageFactory = new MessageFactory(new RSA());
+        MessageFactory messageFactory;
 
 
         public ChatGUI(ref ConnectToTorChat CTTC, string mainName)
         {
             _ConnectToTorChatForm = CTTC;
             _mainName = mainName;
+            messageFactory = new MessageFactory(_ConnectToTorChatForm._rsa);
             InitializeComponent();
         }
 

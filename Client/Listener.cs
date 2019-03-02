@@ -16,7 +16,7 @@ namespace TorChatClient
         private Int32 _port;
         private IPAddress _ip;
         private bool ListiningCondition { get; set; }
-        private MessageFactory messageFactory = new MessageFactory(null);
+        private MessageFactory messageFactory;
         private TCPConnection _TCPConnection = new TCPConnection();
         RSA _rsa;
         private string _savedData = null;
@@ -38,6 +38,7 @@ namespace TorChatClient
             _ip = ip;
             _port = port;
             _rsa = rsa;
+            messageFactory = new MessageFactory(_rsa);
             ListiningCondition = true;
         }
         
