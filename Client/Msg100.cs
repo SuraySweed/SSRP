@@ -21,7 +21,7 @@ namespace TorChatClient
 
         public override string  BuildMessageInString()
         {
-            return "100|" + _nickName + "|" + _publicKey + "|";
+            return "100||||" + _nickName + "||||" + _publicKey + "||||";
         }
     }
 }

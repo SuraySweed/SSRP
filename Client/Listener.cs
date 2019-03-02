@@ -48,7 +48,7 @@ namespace TorChatClient
 
             while (ListiningCondition)
             {
-                Byte[] bytes = new Byte[256];
+                Byte[] bytes = new Byte[64000];
                 String data = null;
                 
                 _client = _tcpListener.AcceptTcpClient();

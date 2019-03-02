@@ -54,7 +54,7 @@ namespace TorChatClient
 
         public Msg handleRecvMsg(string rcvdMSG)
         {
-            string[] splitedMSG = rcvdMSG.Split('|');
+            string[] splitedMSG = rcvdMSG.Split(new string[] { "||||" }, StringSplitOptions.None);
 
             if (splitedMSG[0] == "201")// getting welcome message and our port
             {
@@ -94,7 +94,7 @@ namespace TorChatClient
             {
                 byte[] bytes = Encoding.UTF8.GetBytes(splitedMSG[1]);
                 List<byte[]> encryptedListToDycrypt = new List<byte[]>();
-                string decryptedMsg = "150|";
+                string decryptedMsg = "150||||";
 
                 for (int i = 0; i < bytes.Length / 256; i++) 
                 {
@@ -107,7 +107,7 @@ namespace TorChatClient
                 }
 
                 List<Tuple<string, Int32>> addressesList = new List<Tuple<string, int>>();
-                List<string> theMsg = new List<string>(decryptedMsg.Split('|'));
+                List<string> theMsg = new List<string>(decryptedMsg.Split(new string[] { "||||" }, StringSplitOptions.None));
 
                 foreach (string add in theMsg.GetRange(2, theMsg.Count - 1))
                 {

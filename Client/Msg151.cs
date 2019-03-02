@@ -17,7 +17,7 @@ namespace TorChatClient
 
         public override string BuildMessageInString()
         {
-            return "151|" + _data;
+            return "151||||" + _data;
         }
     }
 }

@@ -36,11 +36,11 @@ namespace TorChatClient
 
         public override string BuildMessageInString()
         {
-            string msgToSend = "150|" + _data;
+            string msgToSend = "150||||" + _data;
 
             for (int i = 0; i < _listOfAddresses.Count; i++)
             {
-                msgToSend += "|" + _listOfAddresses[i].Item1.ToString() + "," + _listOfAddresses[i].Item2.ToString();
+                msgToSend += "||||" + _listOfAddresses[i].Item1.ToString() + "," + _listOfAddresses[i].Item2.ToString();
             }
 
             return msgToSend;

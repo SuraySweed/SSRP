@@ -125,8 +125,8 @@ namespace TorChatClient
             byte[] EncryptedText = new byte[256];
             List<byte[]> encryptedList = new List<byte[]>();
             string finalMessage = ""; //message to send
-            string[] splitedMsg = msg.Split('|');
-            string currentMsg = splitedMsg[1] + "|" + splitedMsg[2];
+            string[] splitedMsg = msg.Split(new string[] { "||||" }, StringSplitOptions.None);
+            string currentMsg = splitedMsg[1];
             /*
               splited[0] --> msgCode
               splited[1] --> msgData
@@ -137,7 +137,7 @@ namespace TorChatClient
                      * 
               splited[n-2] --> add1
             */
-            int msgCounter = 3;
+            int msgCounter = 2;
             for (int i = keys.Count - 1; i >= 0; i--)
             {
                 if (i == keys.Count - 1) 
@@ -146,7 +146,7 @@ namespace TorChatClient
                 {
                     // combining the encrypted part with the next address
                     List<byte> list1 = new List<byte>(EncryptedText);
-                    List<byte> list2 = new List<byte>(Encoding.UTF8.GetBytes("|" + splitedMsg[msgCounter]));
+                    List<byte> list2 = new List<byte>(Encoding.UTF8.GetBytes("||||" + splitedMsg[msgCounter]));
                     list1.AddRange(list2);
                     EncryptedText = list1.ToArray();
                     list1.Clear();
@@ -171,7 +171,7 @@ namespace TorChatClient
             
 
             
-            return splitedMsg[0] + finalMessage;
+            return splitedMsg[0]+ "||||" + finalMessage;
         }
     }
 }
