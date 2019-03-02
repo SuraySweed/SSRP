@@ -92,10 +92,24 @@ namespace TorChatClient
             }
             else if (splitedMSG[0] == "150") // forward
             {
-                List<Tuple<string, Int32>> addressesList = new List<Tuple<string, int>>();
-                List<string> theMsg = new List<string>(splitedMSG);
+                byte[] bytes = Encoding.UTF8.GetBytes(splitedMSG[1]);
+                List<byte[]> encryptedListToDycrypt = new List<byte[]>();
+                string decryptedMsg = "150|";
 
-                foreach (string add in theMsg.GetRange(2, theMsg.Count - 2))
+                for (int i = 0; i < bytes.Length / 256; i++) 
+                {
+                    encryptedListToDycrypt.Add(bytes.Skip(32 * i).Take(32).ToArray());
+                }
+                for (int i = 0; i < encryptedListToDycrypt.Count; i++)
+                {
+                    encryptedListToDycrypt[i] = _encryptionHelper.Decrypt(encryptedListToDycrypt[i]);
+                    decryptedMsg += Encoding.UTF8.GetString(encryptedListToDycrypt[i]);
+                }
+
+                List<Tuple<string, Int32>> addressesList = new List<Tuple<string, int>>();
+                List<string> theMsg = new List<string>(decryptedMsg.Split('|'));
+
+                foreach (string add in theMsg.GetRange(2, theMsg.Count - 1))
                 {
                     string[] IPPORT = add.Split(',');
                     addressesList.Add(new Tuple<string, Int32>(IPPORT[0], Int32.Parse(IPPORT[1])));

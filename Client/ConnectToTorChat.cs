@@ -78,7 +78,7 @@ namespace TorChatClient
                     Msg msgRecved = _MessageFactory.handleRecvMsg(_connection.ReceiveData());
                     Msg201 msg201 = (Msg201)msgRecved;
                     
-                    meListening = new Listener(msg201.IP, msg201.Port);
+                    meListening = new Listener(msg201.IP, msg201.Port, ref _rsa);
                     MessageBox.Show(msg201.getData());
                  
                     ConnectToTorChat torChater = this as ConnectToTorChat;

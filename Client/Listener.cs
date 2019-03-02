@@ -18,6 +18,7 @@ namespace TorChatClient
         private bool ListiningCondition { get; set; }
         private MessageFactory messageFactory = new MessageFactory(null);
         private TCPConnection _TCPConnection = new TCPConnection();
+        RSA _rsa;
         private string _savedData = null;
         private bool _dataChanged = false;
         public string SavedData
@@ -32,10 +33,11 @@ namespace TorChatClient
         }
 
         
-        public Listener(IPAddress ip, Int32 port)
+        public Listener(IPAddress ip, Int32 port, ref RSA rsa)
         {
             _ip = ip;
             _port = port;
+            _rsa = rsa;
             ListiningCondition = true;
         }
         
@@ -60,7 +62,8 @@ namespace TorChatClient
                 while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
                 {
                     data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
-                    Msg msgRecieved = messageFactory.handleRecvMsg(data);
+                    byte[] byts = Encoding.UTF8.GetBytes(data);
+                    Msg msgRecieved = messageFactory.handleRecvMsg(Encoding.UTF8.GetString(byts));
 
                     if(msgRecieved.getMessageCode() == 150)
                     {

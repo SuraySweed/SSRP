@@ -20,6 +20,7 @@ namespace TorChatClient
         private int recepientPORT;
         private string _mainName;
         private List<Tuple<string, Int32>> _currentRoute;
+        List<string> _keys;
         public string goesRightToChat;
 
         ConnectToTorChat _ConnectToTorChatForm;
@@ -85,6 +86,7 @@ namespace TorChatClient
 
                     Msg203 msg203 = (Msg203)rcvdMsg;
                     _currentRoute = msg203.GetRoute();
+                    _keys = msg203.GetKeysInRoute();
 
                     recepientIP = _currentRoute[_currentRoute.Count - 1].Item1;
                     recepientPORT = _currentRoute[_currentRoute.Count - 1].Item2;
@@ -127,7 +129,9 @@ namespace TorChatClient
                 //string dataToSend = messageFactory.PeersMessages((_mainName + ": " + messageToSendBox.Text), _currentRoute).BuildMessageInString();
                 //_rsaEncryption.Encrypt(Encoding.UTF8.GetBytes(dataToSend));
 
-                _connection.SendData(messageFactory.PeersMessages((_mainName + ": " + messageToSendBox.Text), _currentRoute).BuildMessageInString());
+                string dataToSend = _ConnectToTorChatForm._rsa.EncryptMessageSeveralTimes(messageFactory.PeersMessages((_mainName + ": " + messageToSendBox.Text), _currentRoute).BuildMessageInString(), _keys);
+
+                _connection.SendData(dataToSend);
                 _connection.disconnect();
 
                 ChatText.Text += "me: " + messageToSendBox.Text;

@@ -68,17 +68,18 @@ namespace TorChatClient
             return ExponentAndModulusInString;
         }
 
-        public void ConvertPKfromStringToRsaParameter(string returnedMsg)
+        public RSAParameters ConvertPKfromStringToRsaParameter(string returnedMsg)
         {
             string[] str = returnedMsg.Split('@');
             string exponent = str[0];
             string[] exponentArray = exponent.Split('#');
             string modulus = str[1];
             string[] modulusArray = modulus.Split('#');
-            byte[] PkExponent = new byte[exponentArray.Length];
+            byte[] PkExponent = new byte[exponentArray.Length - 1];
             byte[] PkModulus = new byte[modulusArray.Length - 1];
+            RSAParameters key = new RSAParameters();
 
-            for (int i = 0; i < exponentArray.Length; i++)
+            for (int i = 0; i < exponentArray.Length - 1; i++)
             {
                 PkExponent[i] = (byte)Int32.Parse(exponentArray[i]);
             }
@@ -87,16 +88,13 @@ namespace TorChatClient
             {
                 PkModulus[i] = (byte)Int32.Parse(modulusArray[i]);
             }
-            for (int i = 0; i < PkExponent.Length; i++)
-            {
-                publicKey.Exponent[i] = PkExponent[i];
-            }
 
-            for (int i = 0; i < PkModulus.Length; i++)
-            {
-                publicKey.Modulus[i] = PkModulus[i];
-            }
+            key.Exponent = PkExponent;
+            key.Modulus = PkModulus;
+
+            return key;
         }
+
 
         public byte[] Encrypt(byte[] dataToEcrypt, RSAParameters pkey)
         {
@@ -120,6 +118,60 @@ namespace TorChatClient
                 DecryptedData = rsa.Decrypt(dataToDecrypt, true);
             }
             return DecryptedData;
+        }
+
+        public string EncryptMessageSeveralTimes(string msg, List<string> keys)
+        {
+            byte[] EncryptedText = new byte[256];
+            List<byte[]> encryptedList = new List<byte[]>();
+            string finalMessage = ""; //message to send
+            string[] splitedMsg = msg.Split('|');
+            string currentMsg = splitedMsg[1] + "|" + splitedMsg[2];
+            /*
+              splited[0] --> msgCode
+              splited[1] --> msgData
+              splited[2] --> addN
+              splited[3] --> add(N-1)
+                     *
+                     * 
+                     * 
+              splited[n-2] --> add1
+            */
+            int msgCounter = 3;
+            for (int i = keys.Count - 1; i >= 0; i--)
+            {
+                if (i == keys.Count - 1) 
+                    EncryptedText = Encrypt(Encoding.UTF8.GetBytes(currentMsg), ConvertPKfromStringToRsaParameter(keys[i]));
+                else
+                {
+                    // combining the encrypted part with the next address
+                    List<byte> list1 = new List<byte>(EncryptedText);
+                    List<byte> list2 = new List<byte>(Encoding.UTF8.GetBytes("|" + splitedMsg[msgCounter]));
+                    list1.AddRange(list2);
+                    EncryptedText = list1.ToArray();
+                    list1.Clear();
+
+                    for(int k=0; k<EncryptedText.Length/32 + 1; k++)
+                    {
+                        encryptedList.Add(EncryptedText.Skip(32 * k).Take(32).ToArray());
+                    }
+                    for(int k=0;k<encryptedList.Count; k++)
+                    {
+                        encryptedList[k] = Encrypt(encryptedList[k], ConvertPKfromStringToRsaParameter(keys[i]));
+                        list1.AddRange(encryptedList[k]);
+                    }
+                    EncryptedText = list1.ToArray();
+
+                    msgCounter++;
+                }
+            }
+
+            
+            finalMessage = Encoding.UTF8.GetString(EncryptedText);
+            
+
+            
+            return splitedMsg[0] + finalMessage;
         }
     }
 }
