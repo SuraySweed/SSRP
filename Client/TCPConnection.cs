@@ -59,7 +59,7 @@ namespace TorChatClient
 
         public void SendData(string msg)
         {
-            byte[] buffer = new ASCIIEncoding().GetBytes(msg);
+            byte[] buffer = Encoding.UTF8.GetBytes(msg); //ASCIIEncoding().GetBytes(msg);
             _clientStream.Write(buffer, 0, buffer.Length);
             _clientStream.Flush();
         }
@@ -70,7 +70,7 @@ namespace TorChatClient
             {
                 byte[] bufferln = new byte[64000];
                 int bytesRead = _clientStream.Read(bufferln, 0, 64000);
-                string message = new ASCIIEncoding().GetString(bufferln);
+                string message = Encoding.UTF8.GetString(bufferln); //new ASCIIEncoding().GetString(bufferln);
                 return message;
             }
             catch (Exception e)

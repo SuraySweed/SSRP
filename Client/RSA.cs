@@ -138,9 +138,9 @@ namespace TorChatClient
               splited[n-2] --> add1
             */
             int msgCounter = 2;
-            for (int i = keys.Count - 1; i >= 0; i--)
+            for (int i = 0; i < keys.Count; i++)
             {
-                if (i == keys.Count - 1) 
+                if (i == 0) 
                     EncryptedText = Encrypt(Encoding.UTF8.GetBytes(currentMsg), ConvertPKfromStringToRsaParameter(keys[i]));
                 else
                 {

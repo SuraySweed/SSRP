@@ -62,8 +62,7 @@ namespace TorChatClient
 
                 while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
                 {
-                    data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
-                    byte[] byts = Encoding.UTF8.GetBytes(data);
+                    data = System.Text.Encoding.UTF8.GetString(bytes, 0, i);
                     Msg msgRecieved = messageFactory.handleRecvMsg(Encoding.UTF8.GetString(byts));
 
                     if(msgRecieved.getMessageCode() == 150)
