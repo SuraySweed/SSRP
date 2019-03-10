@@ -141,12 +141,12 @@ namespace TorChatClient
             for (int i = 0; i < keys.Count; i++)
             {
                 if (i == 0) 
-                    EncryptedText = Encrypt(Encoding.UTF8.GetBytes(currentMsg), ConvertPKfromStringToRsaParameter(keys[i]));
+                    EncryptedText = Encrypt(GetBytes(currentMsg), ConvertPKfromStringToRsaParameter(keys[i]));
                 else
                 {
                     // combining the encrypted part with the next address
                     List<byte> list1 = new List<byte>(EncryptedText);
-                    List<byte> list2 = new List<byte>(Encoding.UTF8.GetBytes("||||" + splitedMsg[msgCounter]));
+                    List<byte> list2 = new List<byte>(GetBytes("||||" + splitedMsg[msgCounter]));
                     list1.AddRange(list2);
                     EncryptedText = list1.ToArray();
                     list1.Clear();
@@ -167,11 +167,25 @@ namespace TorChatClient
             }
 
             
-            finalMessage = Encoding.UTF8.GetString(EncryptedText);
+            finalMessage = GetString(EncryptedText);
             
 
             
             return splitedMsg[0]+ "||||" + finalMessage;
+        }
+
+        static byte[] GetBytes(string str)
+        {
+            byte[] bytes = new byte[str.Length * sizeof(char)];
+            System.Buffer.BlockCopy(str.ToCharArray(), 0, bytes, 0, bytes.Length);
+            return bytes;
+        }
+
+        static string GetString(byte[] bytes)
+        {
+            char[] chars = new char[bytes.Length / sizeof(char)];
+            System.Buffer.BlockCopy(bytes, 0, chars, 0, bytes.Length);
+            return new string(chars);
         }
     }
 }
