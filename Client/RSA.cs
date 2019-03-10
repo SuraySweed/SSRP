@@ -122,7 +122,7 @@ namespace TorChatClient
 
         public string EncryptMessageSeveralTimes(string msg, List<string> keys)
         {
-            byte[] EncryptedText = new byte[256];
+            byte[] EncryptedText = new byte[4800];
             List<byte[]> encryptedList = new List<byte[]>();
             string finalMessage = ""; //message to send
             string[] splitedMsg = msg.Split(new string[] { "||||" }, StringSplitOptions.None);
@@ -141,12 +141,12 @@ namespace TorChatClient
             for (int i = 0; i < keys.Count; i++)
             {
                 if (i == 0) 
-                    EncryptedText = Encrypt(GetBytes(currentMsg), ConvertPKfromStringToRsaParameter(keys[i]));
+                    EncryptedText = Encrypt(Encoding.ASCII.GetBytes(currentMsg), ConvertPKfromStringToRsaParameter(keys[i]));
                 else
                 {
                     // combining the encrypted part with the next address
                     List<byte> list1 = new List<byte>(EncryptedText);
-                    List<byte> list2 = new List<byte>(GetBytes("||||" + splitedMsg[msgCounter]));
+                    List<byte> list2 = new List<byte>(Encoding.ASCII.GetBytes("||||" + splitedMsg[msgCounter]));
                     list1.AddRange(list2);
                     EncryptedText = list1.ToArray();
                     list1.Clear();
@@ -166,17 +166,28 @@ namespace TorChatClient
                 }
             }
 
-            
-            finalMessage = GetString(EncryptedText);
-            
 
-            
+            finalMessage = BitConverter.ToString(EncryptedText);//Encoding.UTF8.GetString(EncryptedText);
+            String[] s = finalMessage.Split('-');
+            byte[] a = new byte[s.Length];
+            for(int i = 0; i < s.Length; i++)
+            {
+                a[i] = Convert.ToByte(s[i], 16);
+            }
+
+            //var table = (Encoding.Default.GetString(EncryptedText, 0, EncryptedText.Length - 1)).Split(new string[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+            //char[] finalMessageCharArray = EncryptedText.Select(b => (char)b).ToArray();
+            //finalMessage = GetString(EncryptedText);
+            //finalMessage = new string(finalMessageCharArray);
+
+
             return splitedMsg[0]+ "||||" + finalMessage;
         }
 
         static byte[] GetBytes(string str)
         {
-            byte[] bytes = new byte[str.Length * sizeof(char)];
+            byte[] bytes = new byte[str.Length];
+            char[] s = str.ToCharArray();
             System.Buffer.BlockCopy(str.ToCharArray(), 0, bytes, 0, bytes.Length);
             return bytes;
         }

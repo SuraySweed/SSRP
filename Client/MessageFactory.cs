@@ -92,36 +92,66 @@ namespace TorChatClient
             }
             else if (splitedMSG[0] == "150") // forward
             {
-                byte[] bytes = Encoding.UTF8.GetBytes(splitedMSG[1]);
+                //byte[] bytes = Encoding.UTF8.GetBytes(splitedMSG[1]);
+
+                String[] s = splitedMSG[1].Split('-');
+                byte[] a = new byte[s.Length -1];
+                for (int i = 0; i < s.Length - 1; i++)
+                {
+                    a[i] = Convert.ToByte(s[i], 16);
+                }
+
                 List<byte[]> encryptedListToDycrypt = new List<byte[]>();
                 string decryptedMsg = "150||||";
 
-                for (int i = 0; i < bytes.Length / 256; i++) 
+                for (int i = 0; i < a.Length / 256; i++) 
                 {
-                    encryptedListToDycrypt.Add(bytes.Skip(256 * i).Take(256).ToArray());
+                    encryptedListToDycrypt.Add(a.Skip(256 * i).Take(256).ToArray());
                 }
                 for (int i = 0; i < encryptedListToDycrypt.Count; i++)
                 {
-                    encryptedListToDycrypt[i] = _encryptionHelper.Decrypt(encryptedListToDycrypt[i]);
+                    encryptedListToDycrypt[i] = _encryptionHelper.Decrypt(encryptedListToDycrypt[i]); //decrypted parts
                     decryptedMsg += Encoding.UTF8.GetString(encryptedListToDycrypt[i]);
                 }
 
                 List<Tuple<string, Int32>> addressesList = new List<Tuple<string, int>>();
                 List<string> theMsg = new List<string>(decryptedMsg.Split(new string[] { "||||" }, StringSplitOptions.None));
 
-                foreach (string add in theMsg.GetRange(2, theMsg.Count - 1))
+                foreach (string add in theMsg.GetRange(2, theMsg.Count - 2))
                 {
                     string[] IPPORT = add.Split(',');
                     addressesList.Add(new Tuple<string, Int32>(IPPORT[0], Int32.Parse(IPPORT[1])));
                 }
 
-                Msg msg150 = new Msg150(splitedMSG[1], addressesList);
+                List<byte> list1 = new List<byte>();
+                for (int k = 0; k < encryptedListToDycrypt.Count; k++)
+                {
+                    list1.AddRange(encryptedListToDycrypt[k]);
+                }
 
+
+                byte[] msgToForward = list1.ToArray();
+
+                msgToForward = msgToForward.Take(msgToForward.Length - msgToForward.Length % 256).ToArray();
+
+
+                Msg msg150 = new Msg150(BitConverter.ToString(msgToForward) + "-", addressesList);
+                
                 return msg150;
             }
             else if (splitedMSG[0] == "151")// got a message
             {
-                Msg msg151 = new Msg151(splitedMSG[1]);
+                
+                String[] s = splitedMSG[1].Split('-');
+                byte[] a = new byte[s.Length - 1];
+                for (int i = 0; i < s.Length - 1; i++)
+                {
+                    a[i] = Convert.ToByte(s[i], 16);
+                }
+                
+                byte[] b = _encryptionHelper.Decrypt(a);
+
+                Msg msg151 = new Msg151(Encoding.UTF8.GetString(b));
                 
                 return msg151;
             }
