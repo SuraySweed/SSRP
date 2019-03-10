@@ -4,7 +4,7 @@ import subprocess
 
 PORT = 8820
 USERS_DB_NAME = "Users.db"
-ServerIP = "10.0.0.22"
+ServerIP = "127.0.0.1"
 
 users_dictionary = {}
 
