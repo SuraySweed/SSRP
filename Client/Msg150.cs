@@ -9,11 +9,13 @@ namespace TorChatClient
     class Msg150 : Msg
     {
         private List<Tuple<string, Int32>> _listOfAddresses;
+        private int _routsNumber;
 
-        public Msg150(string data, List<Tuple<string, Int32>> listOfAddresses)
+        public Msg150(string data, List<Tuple<string, Int32>> listOfAddresses, int routsN)
         {
             _data = data;
             _listOfAddresses = listOfAddresses;
+            _routsNumber = routsN;
             _messageCode = 150;
         }
 
@@ -24,14 +26,19 @@ namespace TorChatClient
             return newList;
         }
 
-        public List<Tuple<string, Int32>> getCurrentRoute()
+        public List<Tuple<string, Int32>> getCurrentAddress()
         {
             return _listOfAddresses;
         }
 
-        public Tuple<string, Int32> getNextAdrressToSendTo()
+        //public Tuple<string, Int32> getNextAdrressToSendTo()
+        //{
+        //    return _listOfAddresses[_listOfAddresses.Count - 1];
+        //}
+
+        public int getRoutsNumber()
         {
-            return _listOfAddresses[_listOfAddresses.Count - 1];
+            return _routsNumber;
         }
 
         public override string BuildMessageInString()
