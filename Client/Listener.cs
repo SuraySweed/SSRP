@@ -68,9 +68,9 @@ namespace TorChatClient
                     if(msgRecieved.getMessageCode() == 150)
                     {
                         Msg150 msg150 = (Msg150)msgRecieved;
-                        Msg msgToSend = messageFactory.PeersMessages(msg150.getData(), msg150.getNextRoute(), msg150.getRoutsNumber());
+                        Msg msgToSend = messageFactory.PeersMessages(msg150.getData(), msg150.getNextRoute());
 
-                        if (_TCPConnection.establishConnection(msg150.getCurrentAddress()[0].Item1, msg150.getCurrentAddress()[0].Item2))
+                        if (_TCPConnection.establishConnection(msg150.getNextAdrressToSendTo().Item1, msg150.getNextAdrressToSendTo().Item2))
                         {
                             if (msgToSend.getMessageCode() == 150)
                             {

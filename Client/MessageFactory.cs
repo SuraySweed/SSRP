@@ -36,17 +36,17 @@ namespace TorChatClient
             return msg102;
         }
 
-        public Msg PeersMessages(string msg, List<Tuple<string, Int32>> listOfAddresses, int routesLeft)
+        public Msg PeersMessages(string msg, List<Tuple<string, Int32>> listOfAddresses)
         {
             Msg msgToSend = null;
 
-            if (routesLeft == 0)
+            if (listOfAddresses.Count == 0)
             {
                 msgToSend = new Msg151(msg);
             }
             else
             {
-                msgToSend = new Msg150(msg, listOfAddresses, routesLeft - 1);
+                msgToSend = new Msg150(msg, listOfAddresses);
             }
 
             return msgToSend;
@@ -93,7 +93,6 @@ namespace TorChatClient
             else if (splitedMSG[0] == "150") // forward
             {
                 //byte[] bytes = Encoding.UTF8.GetBytes(splitedMSG[1]);
-                int routesLeft = 0;
 
                 String[] s = splitedMSG[1].Split('-');
                 byte[] a = new byte[s.Length -1];
@@ -122,7 +121,6 @@ namespace TorChatClient
                 {
                     string[] IPPORT = add.Split(',');
                     addressesList.Add(new Tuple<string, Int32>(IPPORT[0], Int32.Parse(IPPORT[1])));
-                    routesLeft = Int32.Parse(IPPORT[2]);// the number of addresses left
                 }
 
                 List<byte> list1 = new List<byte>();
@@ -137,7 +135,7 @@ namespace TorChatClient
                 msgToForward = msgToForward.Take(msgToForward.Length - msgToForward.Length % 256).ToArray();
 
 
-                Msg msg150 = new Msg150(BitConverter.ToString(msgToForward) + "-", addressesList, routesLeft);
+                Msg msg150 = new Msg150(BitConverter.ToString(msgToForward) + "-", addressesList);
                 
                 return msg150;
             }

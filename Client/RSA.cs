@@ -9,6 +9,14 @@ namespace TorChatClient
 {
     public class RSA
     {
+        /*
+         byte[] encrypted = Encrypt(Encoding.UTF8.GetBytes(message), publicKey);
+         byte[] decrypted = Decrypt(encrypted);
+
+         Console.WriteLine("orginal: " + message + "\n");
+         Console.WriteLine("encrypted:\n" + BitConverter.ToString(encrypted).Replace("-", ""));
+         Console.WriteLine("\ndecrypted :\n" + Encoding.UTF8.GetString(decrypted));
+        */
         static private RSAParameters publicKey;
         static private RSAParameters privateKey;
 
@@ -130,7 +138,6 @@ namespace TorChatClient
               splited[n-2] --> add1
             */
             int msgCounter = 2;
-            int addessesCounter = keys.Count - 2;
             for (int i = 0; i < keys.Count; i++)
             {
                 if (i == 0) 
@@ -139,7 +146,7 @@ namespace TorChatClient
                 {
                     // combining the encrypted part with the next address
                     List<byte> list1 = new List<byte>(EncryptedText);
-                    List<byte> list2 = new List<byte>(Encoding.ASCII.GetBytes("||||" + splitedMsg[msgCounter] + "," + Convert.ToString(addessesCounter)));
+                    List<byte> list2 = new List<byte>(Encoding.ASCII.GetBytes("||||" + splitedMsg[msgCounter]));
                     list1.AddRange(list2);
                     EncryptedText = list1.ToArray();
                     list1.Clear();
@@ -154,10 +161,8 @@ namespace TorChatClient
                         list1.AddRange(encryptedList[k]);
                     }
                     EncryptedText = list1.ToArray();
-                    encryptedList.Clear();
 
                     msgCounter++;
-                    addessesCounter--;
                 }
             }
 
@@ -176,7 +181,7 @@ namespace TorChatClient
             //finalMessage = new string(finalMessageCharArray);
 
 
-            return splitedMsg[0]+ "||||" + finalMessage + "-";
+            return splitedMsg[0]+ "||||" + finalMessage;
         }
 
         static byte[] GetBytes(string str)
