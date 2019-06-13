@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConnectToTorChat));
             this.exitButton = new System.Windows.Forms.Button();
             this.nameBox = new System.Windows.Forms.TextBox();
             this.fstMsg = new System.Windows.Forms.Label();
@@ -36,6 +37,7 @@
             // 
             // exitButton
             // 
+            this.exitButton.ForeColor = System.Drawing.Color.Indigo;
             this.exitButton.Location = new System.Drawing.Point(31, 291);
             this.exitButton.Name = "exitButton";
             this.exitButton.Size = new System.Drawing.Size(120, 45);
@@ -56,7 +58,9 @@
             // fstMsg
             // 
             this.fstMsg.AutoSize = true;
+            this.fstMsg.BackColor = System.Drawing.Color.Transparent;
             this.fstMsg.Font = new System.Drawing.Font("Miriam Fixed", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.fstMsg.ForeColor = System.Drawing.Color.Indigo;
             this.fstMsg.Location = new System.Drawing.Point(62, 51);
             this.fstMsg.Name = "fstMsg";
             this.fstMsg.Size = new System.Drawing.Size(357, 32);
@@ -67,6 +71,7 @@
             // ConnectButton
             // 
             this.ConnectButton.Enabled = false;
+            this.ConnectButton.ForeColor = System.Drawing.Color.Indigo;
             this.ConnectButton.Location = new System.Drawing.Point(342, 290);
             this.ConnectButton.Name = "ConnectButton";
             this.ConnectButton.Size = new System.Drawing.Size(99, 46);
@@ -79,11 +84,13 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.InactiveCaption;
             this.ClientSize = new System.Drawing.Size(496, 359);
             this.Controls.Add(this.ConnectButton);
             this.Controls.Add(this.fstMsg);
             this.Controls.Add(this.nameBox);
             this.Controls.Add(this.exitButton);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ConnectToTorChat";
             this.Text = "TorChater";
             this.Load += new System.EventHandler(this.TorChater_Load);

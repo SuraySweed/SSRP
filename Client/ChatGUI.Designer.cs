@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ChatGUI));
             this.ChatText = new System.Windows.Forms.RichTextBox();
             this.messageToSendBox = new System.Windows.Forms.TextBox();
             this.HelppingText = new System.Windows.Forms.Label();
@@ -68,6 +69,7 @@
             // 
             this.HelppingText.AutoSize = true;
             this.HelppingText.Font = new System.Drawing.Font("Miriam Fixed", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.HelppingText.ForeColor = System.Drawing.Color.ForestGreen;
             this.HelppingText.Location = new System.Drawing.Point(20, 296);
             this.HelppingText.Name = "HelppingText";
             this.HelppingText.Size = new System.Drawing.Size(262, 19);
@@ -78,6 +80,7 @@
             // 
             this.sendMessageButton.Enabled = false;
             this.sendMessageButton.Font = new System.Drawing.Font("Miriam Fixed", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.sendMessageButton.ForeColor = System.Drawing.Color.Indigo;
             this.sendMessageButton.Location = new System.Drawing.Point(24, 349);
             this.sendMessageButton.Name = "sendMessageButton";
             this.sendMessageButton.Size = new System.Drawing.Size(167, 40);
@@ -89,6 +92,7 @@
             // exitBut
             // 
             this.exitBut.Font = new System.Drawing.Font("Miriam Fixed", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.exitBut.ForeColor = System.Drawing.Color.Indigo;
             this.exitBut.Location = new System.Drawing.Point(454, 220);
             this.exitBut.Name = "exitBut";
             this.exitBut.Size = new System.Drawing.Size(142, 57);
@@ -109,6 +113,7 @@
             // 
             this.moreHelp.AutoSize = true;
             this.moreHelp.Font = new System.Drawing.Font("Miriam Fixed", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.moreHelp.ForeColor = System.Drawing.Color.ForestGreen;
             this.moreHelp.Location = new System.Drawing.Point(451, 42);
             this.moreHelp.Name = "moreHelp";
             this.moreHelp.Size = new System.Drawing.Size(98, 16);
@@ -119,6 +124,7 @@
             // 
             this.getNameButton.Enabled = false;
             this.getNameButton.Font = new System.Drawing.Font("Miriam Fixed", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.getNameButton.ForeColor = System.Drawing.Color.Indigo;
             this.getNameButton.Location = new System.Drawing.Point(474, 114);
             this.getNameButton.Name = "getNameButton";
             this.getNameButton.Size = new System.Drawing.Size(75, 23);
@@ -140,6 +146,7 @@
             // disconnectButton
             // 
             this.disconnectButton.Font = new System.Drawing.Font("Miriam Fixed", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.disconnectButton.ForeColor = System.Drawing.Color.Indigo;
             this.disconnectButton.Location = new System.Drawing.Point(454, 114);
             this.disconnectButton.Name = "disconnectButton";
             this.disconnectButton.Size = new System.Drawing.Size(81, 23);
@@ -159,6 +166,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.InactiveCaption;
             this.ClientSize = new System.Drawing.Size(625, 471);
             this.Controls.Add(this.disconnectButton);
             this.Controls.Add(this.otherName);
@@ -170,6 +178,7 @@
             this.Controls.Add(this.HelppingText);
             this.Controls.Add(this.messageToSendBox);
             this.Controls.Add(this.ChatText);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ChatGUI";
             this.Text = "ChatForm";
             this.Load += new System.EventHandler(this.ChatForm_Load);

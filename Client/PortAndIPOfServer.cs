@@ -9,7 +9,7 @@ namespace TorChatClient
     public class PortAndIPOfServer
     {
         private Int32 ServerPORT = 8820;
-        private string ServerIPHOST = "10.0.0.5";
+        private string ServerIPHOST = "10.0.0.2";
 
         public Int32 GetServerPort()
         {

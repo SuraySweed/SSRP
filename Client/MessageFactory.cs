@@ -93,7 +93,7 @@ namespace TorChatClient
             else if (splitedMSG[0] == "150") // forward
             {
                 //byte[] bytes = Encoding.UTF8.GetBytes(splitedMSG[1]);
-
+                int routesLeft = 0;
                 String[] s = splitedMSG[1].Split('-');
                 byte[] a = new byte[s.Length -1];
                 for (int i = 0; i < s.Length - 1; i++)
@@ -121,6 +121,12 @@ namespace TorChatClient
                 {
                     string[] IPPORT = add.Split(',');
                     addressesList.Add(new Tuple<string, Int32>(IPPORT[0], Int32.Parse(IPPORT[1])));
+                    routesLeft = Int32.Parse(IPPORT[2]);
+                }
+
+                for (int i = 0; i < routesLeft; i++)
+                {
+                    addressesList.Add(null);
                 }
 
                 List<byte> list1 = new List<byte>();

@@ -49,7 +49,7 @@ namespace TorChatClient
 
             while (ListiningCondition)
             {
-                Byte[] bytes = new Byte[64000];
+                Byte[] bytes = new Byte[132000];
                 String data = null;
                 
                 _client = _tcpListener.AcceptTcpClient();
@@ -85,7 +85,7 @@ namespace TorChatClient
                                 _TCPConnection.disconnect();
 
                             }
-                            //MessageBox.Show("netov tam besalam :)");
+                            MessageBox.Show("message transmittid safely");
                         }
                         else
                         {

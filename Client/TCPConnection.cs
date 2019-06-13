@@ -68,8 +68,8 @@ namespace TorChatClient
         {
             try
             {
-                byte[] bufferln = new byte[64000];
-                int bytesRead = _clientStream.Read(bufferln, 0, 64000);
+                byte[] bufferln = new byte[132000];
+                int bytesRead = _clientStream.Read(bufferln, 0, 132000);
                 string message = Encoding.UTF8.GetString(bufferln); //new ASCIIEncoding().GetString(bufferln);
                 return message;
             }
